@@ -1,5 +1,5 @@
 {
-  "name": "typescript-service-sdk",
+  "name": "@gjuchault/typescript-service-sdk",
   "version": "0.0.0-development",
   "type": "module",
   "exports": "./build/index.js",
