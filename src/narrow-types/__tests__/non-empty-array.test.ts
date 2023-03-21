@@ -9,7 +9,7 @@ import {
   map,
   reverse,
   slice,
-} from "../non-empty-array";
+} from "../non-empty-array.js";
 
 describe("concat()", () => {
   describe("given multiple arrays, the first one being a non-empty array", () => {

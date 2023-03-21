@@ -7,7 +7,7 @@ import {
   makePositiveNonZeroNumber,
   makePositiveNumber,
   makeSafeInteger,
-} from "../number";
+} from "../number.js";
 
 describe("makeNegativeInteger()", () => {
   describe.each([-1, -5, -1_209_302])(

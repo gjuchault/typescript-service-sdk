@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { makeValidDate, makeValidDateTime } from "../date-time";
+import { makeValidDate, makeValidDateTime } from "../date-time.js";
 
 describe("makeValidDate()", () => {
   describe.each(["2022-01-01", "1980-12-31", "2090-02-21"])(
