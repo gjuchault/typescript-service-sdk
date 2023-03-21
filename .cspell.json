@@ -7,8 +7,10 @@
     "esbuild",
     "octocat",
     "rmrf",
+    "schemaname",
     "slonik",
     "socio",
+    "tablename",
     "timestamptz",
     "typescript-service-sdk",
     "Unnest"
