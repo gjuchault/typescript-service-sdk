@@ -2,12 +2,16 @@
   "version": "0.2",
   "language": "en",
   "words": [
+    "bytea",
     "degit",
     "esbuild",
-    "typescript-service-sdk",
     "octocat",
     "rmrf",
-    "socio"
+    "slonik",
+    "socio",
+    "timestamptz",
+    "typescript-service-sdk",
+    "Unnest"
   ],
   "flagWords": [],
   "ignorePaths": [
