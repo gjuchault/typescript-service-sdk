@@ -87,6 +87,26 @@ type TypeNameIdentifier =
   | "uuid";
 type ColumnDefinition<TRecord> = [keyof TRecord, TypeNameIdentifier];
 
+/**
+ * create columns and rows data for slonik bulk insert that are efficient and type-safe
+ * @example
+ * const res = prepareBulkInsert(
+ *   [
+ *     ["id", "int4"],
+ *     ["name", "text"]
+ *   ],
+ *   [ { id: 1, name: "foo" }, { id: 2, name: "bar" } ],
+ *   record => ({ ...record })
+ * ).unwrap() // example only, please handle errors
+ *
+ * await connection.query(sql.unsafe`
+ *   insert into "table"(${res.columns})
+ *   select * from ${res.rows}
+ * `);
+ * @param columnDefinitions tuple array of the records keys and their postgres type
+ * @param records records to insert
+ * @param iteratee map method on every record to match the database shape
+ */
 export function prepareBulkInsert<
   TDatabaseRecord extends Record<string, PrimitiveValueExpression>,
   TRecord
