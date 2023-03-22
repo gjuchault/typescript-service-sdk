@@ -1,4 +1,4 @@
-import { Option, Some as some, None as none } from "ts-results";
+import { Option, some, none } from "../tsResults.js";
 
 export interface NonEmptyArray<T> extends Array<T> {
   0: T;

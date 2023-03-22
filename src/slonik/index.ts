@@ -10,9 +10,9 @@ import {
   type QueryResult,
   type QueryResultRow,
 } from "slonik";
-import { Result, Ok as ok, Err as err } from "ts-results";
 import { vi, type Mock } from "vitest";
 import { z, ZodError } from "zod";
+import { Result, ok, err } from "../tsResults.js";
 import { parse } from "../zod/index.js";
 
 export function createMockDatabase(results: readonly QueryResultRow[]): {

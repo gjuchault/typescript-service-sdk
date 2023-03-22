@@ -1,13 +1,6 @@
 import ms from "ms";
-import {
-  Result,
-  Option,
-  Some as some,
-  None as none,
-  Ok as ok,
-  Err as err,
-} from "ts-results";
 import type { ZodError, ZodType, ZodTypeDef } from "zod";
+import { Result, Option, some, none, ok, err } from "../tsResults.js";
 
 // const f = z.string().transform((v) => Number(v));
 
