@@ -1,5 +1,5 @@
 import { Brand, make } from "ts-brand";
-import { Option, Some as some, None as none } from "ts-results";
+import { Option, some, none } from "../tsResults.js";
 
 export type SafeInteger = Brand<number, "Integer">;
 export type PositiveInteger = Brand<number, "PositiveInteger">;

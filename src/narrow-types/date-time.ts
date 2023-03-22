@@ -1,7 +1,7 @@
 // TODO: use temporal
 
 import { Brand, make } from "ts-brand";
-import { Option, Some as some, None as none } from "ts-results";
+import { Option, some, none } from "../tsResults.js";
 
 export type ValidDateTime = Brand<string, "ValidDateTime">;
 export type ValidDate = Brand<string, "ValidDate">;
