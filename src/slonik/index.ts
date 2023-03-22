@@ -65,11 +65,13 @@ export function dropAllTables() {
   `;
 }
 
-type PrepareBulkInsertResult = Result<
+export type PrepareBulkInsertResult = Result<
   { columns: ListSqlToken; rows: UnnestSqlToken },
-  | { reason: "invalidHeaders"; error: ZodError<string[]> }
-  | { reason: "invalidRecordDate"; error: ZodError<string | number | Date> }
+  PrepareBulkInsertError
 >;
+export type PrepareBulkInsertError =
+  | { reason: "invalidHeaders"; error: ZodError<string[]> }
+  | { reason: "invalidRecordDate"; error: ZodError<string | number | Date> };
 // Similar to slonik's TypeNameIdentifier without string
 type TypeNameIdentifier =
   | "bool"
