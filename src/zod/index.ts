@@ -1,5 +1,5 @@
 import ms from "ms";
-import type { ZodError, ZodType, ZodTypeDef } from "zod";
+import { z, type ZodError, type ZodType, type ZodTypeDef } from "zod";
 import { Result, Option, some, none, ok, err } from "../tsResults.js";
 
 // const f = z.string().transform((v) => Number(v));
@@ -16,6 +16,39 @@ export function parse<TOutput, TInput>(
   const zodResult = schema.safeParse(input);
 
   return zodResult.success ? ok(zodResult.data) : err(zodResult.error);
+}
+
+export function zodStringifiedNumber({
+  integer,
+  min,
+  max,
+}: {
+  integer: boolean;
+  min: number;
+  max: number;
+}) {
+  return z
+    .string()
+    .refine(
+      (valueAsString) =>
+        (integer
+          ? parseStringMinMaxInteger(valueAsString, { min, max })
+          : parseStringMinMax(valueAsString, { min, max })
+        ).some
+    )
+    .transform((valueAsString) =>
+      (integer
+        ? parseStringMinMaxInteger(valueAsString, { min, max })
+        : parseStringMinMax(valueAsString, { min, max })
+      ).unwrap()
+    );
+}
+
+export function zodStringifiedMs() {
+  return z
+    .string()
+    .refine((valueAsString) => parseStringMs(valueAsString).some)
+    .transform((valueAsString) => parseStringMs(valueAsString).unwrap());
 }
 
 /**
