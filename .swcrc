@@ -9,5 +9,7 @@
     "type": "es6",
     "noInterop": false
   },
+  "exclude": ["__tests__"],
+  "sourceMaps": true,
   "minify": true
 }
