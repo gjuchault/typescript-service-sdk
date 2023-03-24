@@ -2,8 +2,6 @@ import ms from "ms";
 import { z, type ZodError, type ZodType, type ZodTypeDef } from "zod";
 import { Result, Option, some, none, ok, err } from "../tsResults.js";
 
-// const f = z.string().transform((v) => Number(v));
-
 /**
  * validates an input against a zod schema and return a result from it
  * @param schema zod schema

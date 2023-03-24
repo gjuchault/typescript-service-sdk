@@ -1,5 +1,5 @@
 import { sql } from "slonik";
-import { beforeAll, describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it, vi } from "vitest";
 import { z } from "zod";
 import {
   createFailingQueryMockDatabase,
@@ -9,7 +9,7 @@ import {
 
 describe("createFailingQueryMockDatabase()", () => {
   describe("given no arguments", () => {
-    const { database, query } = createFailingQueryMockDatabase();
+    const { database, query } = createFailingQueryMockDatabase(vi);
 
     describe("when called", () => {
       let hasQueryFailed = false;
@@ -33,7 +33,7 @@ describe("createFailingQueryMockDatabase()", () => {
 
 describe("createMockDatabase()", () => {
   describe("given a mock result", () => {
-    const { database, query } = createMockDatabase([{ id: 1 }, { id: 2 }]);
+    const { database, query } = createMockDatabase(vi, [{ id: 1 }, { id: 2 }]);
 
     describe("when called", () => {
       let result: readonly { id: number }[] = [];

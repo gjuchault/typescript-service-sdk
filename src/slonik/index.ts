@@ -10,12 +10,17 @@ import {
   type QueryResult,
   type QueryResultRow,
 } from "slonik";
-import { vi, type Mock } from "vitest";
+import type { vi, Mock } from "vitest";
 import { z, ZodError } from "zod";
 import { Result, ok, err } from "../tsResults.js";
 import { parse } from "../zod/index.js";
 
-export function createMockDatabase(results: readonly QueryResultRow[]): {
+type VitestUtils = typeof vi;
+
+export function createMockDatabase(
+  vi: VitestUtils,
+  results: readonly QueryResultRow[]
+): {
   database: DatabasePool;
   query: Mock<
     [string, readonly PrimitiveValueExpression[]],
@@ -39,7 +44,7 @@ export function createMockDatabase(results: readonly QueryResultRow[]): {
   };
 }
 
-export function createFailingQueryMockDatabase(): {
+export function createFailingQueryMockDatabase(vi: VitestUtils): {
   database: DatabasePool;
   query: Mock<[string], Promise<QueryResult<QueryResultRow>>>;
 } {
