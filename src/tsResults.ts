@@ -1,17 +1,17 @@
-import * as tsResults from "ts-results";
+import { Some, None, Ok, Err } from "ts-results-es";
 
-export type { Option, Result } from "ts-results";
+export type { Option, Result } from "ts-results-es";
 
-export function some<T>(value: T): tsResults.Some<T> {
-  return new tsResults.Some(value);
+export function some<T>(value: T): Some<T> {
+  return new Some(value);
 }
 
-export const none = tsResults.None;
+export const none = None;
 
-export function ok<T>(value: T): tsResults.Ok<T> {
-  return new tsResults.Ok(value);
+export function ok<T>(value: T): Ok<T> {
+  return new Ok(value);
 }
 
-export function err<T>(value: T): tsResults.Err<T> {
-  return new tsResults.Err(value);
+export function err<T>(value: T): Err<T> {
+  return new Err(value);
 }
