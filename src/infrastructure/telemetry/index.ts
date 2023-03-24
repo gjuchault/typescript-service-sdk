@@ -44,7 +44,7 @@ export async function createTelemetry({
   config: {
     name: string;
     version: string;
-    env: "production" | "development";
+    env: "production" | "development" | "test";
     logLevel: LogLevel;
     tracingSampling: number;
   };
