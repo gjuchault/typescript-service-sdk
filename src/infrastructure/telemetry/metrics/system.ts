@@ -1,5 +1,5 @@
 import perfHooks, { Histogram, NodeGCPerformanceDetail } from "node:perf_hooks";
-import { Meter, ValueType } from "@opentelemetry/api";
+import { Meter, ValueType } from "@opentelemetry/api-metrics";
 import { match } from "ts-pattern";
 import { noop } from "../../../noop.js";
 
