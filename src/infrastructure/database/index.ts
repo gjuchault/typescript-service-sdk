@@ -24,7 +24,7 @@ export async function createDatabase({
   config,
   telemetry,
 }: Dependencies): Promise<Database> {
-  const logger = createLogger("database", { logLevel: config.logLevel });
+  const logger = createLogger("database", { config });
 
   const {
     databaseIdleTimeout: idleTimeout,

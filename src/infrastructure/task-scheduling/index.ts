@@ -60,7 +60,7 @@ export function createTaskScheduling({
     ) {
       const name = `${config.name}-task-scheduling-${taskName}`;
       const logger = createLogger(`task-scheduling-${taskName}`, {
-        logLevel: config.logLevel,
+        config,
       });
 
       const queueConnection = cache.duplicate({ maxRetriesPerRequest: null });

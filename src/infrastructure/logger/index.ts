@@ -6,13 +6,13 @@ export type LogLevel = "fatal" | "error" | "warn" | "info" | "debug" | "trace";
 
 export function createMockLogger(): Logger {
   return createLogger("mock-logger", {
-    logLevel: "error",
+    config: { logLevel: "error" },
   });
 }
 
 export function createLogger(
   serviceName: string,
-  config: { logLevel: LogLevel }
+  { config }: { config: { logLevel: LogLevel } }
 ): Logger {
   const logger = pino({
     name: "app",

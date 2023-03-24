@@ -49,7 +49,7 @@ export async function createTelemetry({
     tracingSampling: number;
   };
 }): Promise<Telemetry> {
-  const logger = createLogger("telemetry", { logLevel: config.logLevel });
+  const logger = createLogger("telemetry", { config });
 
   const traceExporter: SpanExporter =
     config.env === "production"

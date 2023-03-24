@@ -16,7 +16,7 @@ export async function createCacheStorage({
   config,
   telemetry,
 }: Dependencies): Promise<Cache> {
-  const logger = createLogger("redis", { logLevel: config.logLevel });
+  const logger = createLogger("redis", { config });
 
   const redis = new Redis(config.redisUrl, {});
 

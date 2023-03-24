@@ -47,7 +47,7 @@ export async function createHttpServer({
   telemetry: Telemetry;
   appRouter: AnyRouter;
 }) {
-  const logger = createLogger("http", { logLevel: config.logLevel });
+  const logger = createLogger("http", { config });
 
   const httpServer: HttpServer = fastify({
     requestTimeout,
