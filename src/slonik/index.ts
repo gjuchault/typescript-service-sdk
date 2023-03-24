@@ -17,10 +17,16 @@ import { parse } from "../zod/index.js";
 
 export function createMockDatabase(results: readonly QueryResultRow[]): {
   database: DatabasePool;
-  query: Mock<[string], Promise<QueryResult<QueryResultRow>>>;
+  query: Mock<
+    [string, readonly PrimitiveValueExpression[]],
+    Promise<QueryResult<QueryResultRow>>
+  >;
 } {
   const query = vi
-    .fn<[string], Promise<QueryResult<QueryResultRow>>>()
+    .fn<
+      [string, readonly PrimitiveValueExpression[]],
+      Promise<QueryResult<QueryResultRow>>
+    >()
     .mockResolvedValue(createMockQueryResult(results));
 
   const database = createMockPool({
