@@ -1,23 +1,33 @@
 // TODO: use temporal
 
-import { Brand, make } from "ts-brand";
-import { Option, some, none } from "../tsResults.js";
+import { z } from "zod";
 
-export type ValidDateTime = Brand<string, "ValidDateTime">;
-export type ValidDate = Brand<string, "ValidDate">;
+export const validDateTimeSchema = z
+  .union([z.string(), z.date(), z.number()])
+  .refine((input) => {
+    const inputAsDate = new Date(input);
+    if (!isValidDateTime(inputAsDate)) {
+      return false;
+    }
 
-export function makeValidDateTime(
-  input: Date | string | number
-): Option<ValidDateTime> {
-  const inputAsDate = new Date(input);
-  return isValidDateTime(inputAsDate)
-    ? some(make<ValidDateTime>()(inputAsDate.toISOString()))
-    : none;
-}
+    return true;
+  })
+  .transform((input): string => new Date(input).toISOString())
+  .brand<"ValidDateTime">();
 
-export function makeValidDate(input: string): Option<ValidDate> {
-  return isValidDate(input) ? some(make<ValidDate>()(input)) : none;
-}
+export const validDateSchema = z
+  .string()
+  .refine((input) => {
+    if (!isValidDate(input)) {
+      return false;
+    }
+
+    return true;
+  })
+  .brand<"ValidDateTime">();
+
+export type ValidDateTime = z.infer<typeof validDateTimeSchema>;
+export type ValidDate = z.infer<typeof validDateSchema>;
 
 function isValidDateTime(input: Date): boolean {
   return !Number.isNaN(input.getTime());
