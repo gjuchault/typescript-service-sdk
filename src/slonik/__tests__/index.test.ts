@@ -1,6 +1,7 @@
 import { sql } from "slonik";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 import { z } from "zod";
+
 import {
   createFailingQueryMockDatabase,
   createMockDatabase,

@@ -1,18 +1,19 @@
 import {
   createMockPool,
   createMockQueryResult,
+  type DatabasePool,
+  type ListSqlToken,
+  type PrimitiveValueExpression,
+  type QueryResult,
+  type QueryResultRow,
   SlonikError,
   sql,
   type UnnestSqlToken,
-  type ListSqlToken,
-  type PrimitiveValueExpression,
-  type DatabasePool,
-  type QueryResult,
-  type QueryResultRow,
 } from "slonik";
-import type { vi, Mock } from "vitest";
+import type { Mock, vi } from "vitest";
 import { z, ZodError } from "zod";
-import { Result, ok, err } from "../tsResults.js";
+
+import { err, ok, Result } from "../tsResults.js";
 import { parse } from "../zod/index.js";
 
 type VitestUtils = typeof vi;

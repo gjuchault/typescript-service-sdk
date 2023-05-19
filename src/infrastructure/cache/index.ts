@@ -1,5 +1,6 @@
 import { Redis } from "ioredis";
 import ms from "ms";
+
 import { promiseWithTimeout } from "../../helpers/promise-with-timeout.js";
 import { createLogger, type LogLevel } from "../logger/index.js";
 import { type Telemetry } from "../telemetry/index.js";
@@ -22,7 +23,7 @@ export async function createCacheStorage({
 
   redis.on("error", (error) => {
     if (!isRedisError(error)) {
-      throw error;
+      throw new Error(error);
     }
 
     // these will be spamming quite a log stderr

@@ -1,9 +1,10 @@
-import { SpanKind, Span } from "@opentelemetry/api";
+import { Span, SpanKind } from "@opentelemetry/api";
 import {
   DbSystemValues,
   SemanticAttributes,
 } from "@opentelemetry/semantic-conventions";
 import { Interceptor, QueryContext } from "slonik";
+
 import type { Telemetry } from "../index.js";
 
 export const PG_VALUES = "db.postgresql.values";

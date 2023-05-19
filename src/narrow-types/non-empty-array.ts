@@ -1,5 +1,6 @@
-import { type ZodTypeAny, z } from "zod";
-import { type Option, none, some } from "../tsResults.js";
+import { z, type ZodTypeAny } from "zod";
+
+import { none, type Option, some } from "../tsResults.js";
 
 export function createNonEmptyArraySchema<T extends ZodTypeAny>(schema: T) {
   return z.array(schema).nonempty();

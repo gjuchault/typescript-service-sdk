@@ -4,8 +4,8 @@ import {
   Span,
   SpanOptions,
   SpanStatusCode,
-  Tracer,
   trace,
+  Tracer,
 } from "@opentelemetry/api";
 import { Meter, metrics as apiMetrics } from "@opentelemetry/api-metrics";
 import { W3CTraceContextPropagator } from "@opentelemetry/core";
@@ -14,10 +14,11 @@ import { Resource } from "@opentelemetry/resources";
 import { NodeSDK } from "@opentelemetry/sdk-node";
 import {
   InMemorySpanExporter,
-  TraceIdRatioBasedSampler,
   SpanExporter,
+  TraceIdRatioBasedSampler,
 } from "@opentelemetry/sdk-trace-base";
 import { SemanticResourceAttributes } from "@opentelemetry/semantic-conventions";
+
 import { createLogger, type LogLevel } from "../logger/index.js";
 import { bindSystemMetrics } from "./metrics/system.js";
 import { createPinoSpanExporter } from "./pino-exporter.js";

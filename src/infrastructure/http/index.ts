@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+
 import openTelemetryPlugin from "@autotelic/fastify-opentelemetry";
 import circuitBreaker from "@fastify/circuit-breaker";
 import cookie from "@fastify/cookie";
@@ -11,8 +12,8 @@ import rateLimit from "@fastify/rate-limit";
 import underPressure from "@fastify/under-pressure";
 import type { AnyRouter } from "@trpc/server";
 import {
-  fastifyTRPCPlugin,
   type CreateFastifyContextOptions,
+  fastifyTRPCPlugin,
 } from "@trpc/server/adapters/fastify";
 import {
   fastify,
@@ -21,9 +22,10 @@ import {
   type FastifyRequest,
 } from "fastify";
 import ms from "ms";
+
 import {
-  type LogLevel,
   createLogger,
+  type LogLevel,
 } from "../../infrastructure/logger/index.js";
 import { createOpenTelemetryPluginOptions } from "../../infrastructure/telemetry/instrumentations/fastify.js";
 import { metricsPlugin } from "../../infrastructure/telemetry/metrics/fastify.js";

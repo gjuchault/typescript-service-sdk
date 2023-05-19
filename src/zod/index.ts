@@ -1,6 +1,7 @@
 import ms from "ms";
 import { z, type ZodError, type ZodType, type ZodTypeDef } from "zod";
-import { Result, Option, some, none, ok, err } from "../tsResults.js";
+
+import { err, none, ok, Option, Result, some } from "../tsResults.js";
 
 /**
  * validates an input against a zod schema and return a result from it

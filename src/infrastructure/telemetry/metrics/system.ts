@@ -1,6 +1,8 @@
 import perfHooks, { Histogram, NodeGCPerformanceDetail } from "node:perf_hooks";
+
 import { Meter, ValueType } from "@opentelemetry/api-metrics";
 import { match } from "ts-pattern";
+
 import { noop } from "../../../noop.js";
 
 // https://github.com/siimon/prom-client/blob/master/lib/metrics

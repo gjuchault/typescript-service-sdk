@@ -1,10 +1,11 @@
-import { sql, createPool, DatabasePool } from "slonik";
+import { createPool, DatabasePool, sql } from "slonik";
 import { z } from "zod";
+
 import { createLogger, LogLevel } from "../logger/index.js";
 import type { Telemetry } from "../telemetry/index.js";
 import {
-  getSpanOptions,
   createSlonikTelemetryInterceptor,
+  getSpanOptions,
 } from "../telemetry/instrumentations/slonik.js";
 
 interface Dependencies {

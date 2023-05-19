@@ -1,4 +1,4 @@
-import { Some, None, Ok, Err } from "ts-results-es";
+import { Err, None, Ok, Some } from "ts-results-es";
 
 export type { Option, Result } from "ts-results-es";
 
