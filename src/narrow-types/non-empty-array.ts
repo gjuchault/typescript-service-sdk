@@ -1,14 +1,11 @@
-import { Option, some, none } from "../tsResults.js";
+import { z } from "zod";
+import { Option, none, some } from "../tsResults.js";
 
-export interface NonEmptyArray<T> extends Array<T> {
-  0: T;
+export function createNonEmptyArraySchema(schema: z.ZodTypeAny) {
+  return z.array(schema).nonempty();
 }
 
-export function makeNonEmptyArray<T>(
-  input: T[] | readonly T[]
-): Option<NonEmptyArray<T>> {
-  return isNonEmptyArray(input) ? some(input) : none;
-}
+export type NonEmptyArray<T> = [T, ...T[]];
 
 export function isNonEmptyArray<T>(
   input: T[] | readonly T[]
@@ -122,4 +119,8 @@ export function slice<T>(
   end?: number
 ): Option<NonEmptyArray<T>> {
   return makeNonEmptyArray(input.slice(start, end));
+}
+
+export function makeNonEmptyArray<T>(input: T[]): Option<NonEmptyArray<T>> {
+  return isNonEmptyArray(input) ? some(input) : none;
 }
