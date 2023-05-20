@@ -171,7 +171,10 @@ export function prepareBulkInsert<
         columns.push(parseDateResult.val.toISOString());
       }
 
-      columns.push(databaseRecord[columnName]);
+      const column = databaseRecord[columnName];
+      if (column !== undefined) {
+        columns.push(column);
+      }
     }
 
     rows.push(columns);

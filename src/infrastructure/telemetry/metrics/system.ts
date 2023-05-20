@@ -74,9 +74,14 @@ export function bindSystemMetrics({ metrics }: { metrics: Meter }) {
 
   const gcObserver = new perfHooks.PerformanceObserver((list) => {
     const entry = list.getEntries()[0];
+
+    if (entry === undefined) {
+      return;
+    }
+
     const kind = (entry.detail as NodeGCPerformanceDetail).kind;
 
-    if (!kind) {
+    if (kind === undefined) {
       return;
     }
 
@@ -171,11 +176,10 @@ export function bindSystemMetrics({ metrics }: { metrics: Meter }) {
   );
 
   processHandlesGauge.addCallback((observableResult) => {
-    const handles = (
-      process as unknown as Record<string, () => []>
-    )._getActiveHandles();
-
-    observableResult.observe(handles.length);
+    if ("getActiveResourcesInfo" in process) {
+      const handles = (process.getActiveResourcesInfo as () => string[])();
+      observableResult.observe(handles.length);
+    }
   });
 
   // processStartTime

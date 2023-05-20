@@ -96,5 +96,5 @@ function getQueryOperationName(sql: string): string {
     .trim()
     .split(" ")
     .filter((word) => word.length > 0);
-  return words.length > 0 ? words[0].toLowerCase() : "unknown";
+  return words[0]?.toLowerCase() ?? "unknown";
 }

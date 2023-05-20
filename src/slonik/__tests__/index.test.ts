@@ -26,7 +26,7 @@ describe("createFailingQueryMockDatabase()", () => {
       it("throws", () => {
         expect(hasQueryFailed).toBe(true);
         expect(query).toBeCalledTimes(1);
-        expect(query.mock.calls[0][0]).toEqual("select id from foobar");
+        expect(query.mock.calls[0]?.[0]).toEqual("select id from foobar");
       });
     });
   });
@@ -47,7 +47,7 @@ describe("createMockDatabase()", () => {
 
       it("returns the mocked result", () => {
         expect(query).toBeCalledTimes(1);
-        expect(query.mock.calls[0][0]).toEqual("select id from foobar");
+        expect(query.mock.calls[0]?.[0]).toEqual("select id from foobar");
         expect(result).toEqual([{ id: 1 }, { id: 2 }]);
       });
     });
