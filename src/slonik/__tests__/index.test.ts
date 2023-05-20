@@ -68,13 +68,13 @@ describe("prepareBulkInsert()", () => {
       );
 
       it("returns the columns and data grid", () => {
-        expect(prepareBulkInsertResult.ok);
+        expect(prepareBulkInsertResult.isOk()).toBe(true);
 
-        if (!prepareBulkInsertResult.ok) {
+        if (!prepareBulkInsertResult.isOk()) {
           expect.fail();
         }
 
-        expect(prepareBulkInsertResult.val.columns).toEqual({
+        expect(prepareBulkInsertResult.value.columns).toEqual({
           type: "SLONIK_TOKEN_LIST",
           glue: sql.fragment`, `,
           members: [
@@ -84,7 +84,7 @@ describe("prepareBulkInsert()", () => {
           ],
         });
 
-        expect(prepareBulkInsertResult.val.rows).toEqual({
+        expect(prepareBulkInsertResult.value.rows).toEqual({
           columnTypes: ["uuid", "text", "int4"],
           tuples: [["some-uuid", "John Doe", 1]],
           type: "SLONIK_TOKEN_UNNEST",

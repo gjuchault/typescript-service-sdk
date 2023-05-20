@@ -11,6 +11,7 @@
     "fastify",
     "formbody",
     "millis",
+    "neverthrow",
     "nonpositive",
     "octocat",
     "opentelemetry",

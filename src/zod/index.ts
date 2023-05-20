@@ -1,7 +1,8 @@
 import ms from "ms";
+import { err, ok, Result } from "neverthrow";
 import { z, type ZodError, type ZodType, type ZodTypeDef } from "zod";
 
-import { err, none, ok, Option, Result, some } from "../tsResults.js";
+import { none, Option, some } from "../option";
 
 /**
  * validates an input against a zod schema and return a result from it
@@ -28,26 +29,25 @@ export function zodStringifiedNumber({
 }) {
   return z
     .string()
-    .refine(
-      (valueAsString) =>
-        (integer
-          ? parseStringMinMaxInteger(valueAsString, { min, max })
-          : parseStringMinMax(valueAsString, { min, max })
-        ).some
-    )
-    .transform((valueAsString) =>
+    .refine((valueAsString) =>
       (integer
         ? parseStringMinMaxInteger(valueAsString, { min, max })
         : parseStringMinMax(valueAsString, { min, max })
-      ).unwrap()
-    );
+      ).isSome()
+    )
+    .transform((valueAsString) => {
+      (integer
+        ? parseStringMinMaxInteger(valueAsString, { min, max })
+        : parseStringMinMax(valueAsString, { min, max })
+      )._unsafeUnwrap();
+    });
 }
 
 export function zodStringifiedMs() {
   return z
     .string()
-    .refine((valueAsString) => parseStringMs(valueAsString).some)
-    .transform((valueAsString) => parseStringMs(valueAsString).unwrap());
+    .refine((valueAsString) => parseStringMs(valueAsString).isSome())
+    .transform((valueAsString) => parseStringMs(valueAsString)._unsafeUnwrap());
 }
 
 /**
@@ -63,9 +63,9 @@ export function parseStringMs(valueAsString: string): Option<number> {
       return some(value);
     }
 
-    return none;
+    return none();
   } catch {
-    return none;
+    return none();
   }
 }
 
@@ -85,7 +85,7 @@ export function parseStringMinMaxInteger(
     return some(value);
   }
 
-  return none;
+  return none();
 }
 
 /**
@@ -104,5 +104,5 @@ export function parseStringMinMax(
     return some(value);
   }
 
-  return none;
+  return none();
 }

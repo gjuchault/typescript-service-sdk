@@ -1,3 +1,4 @@
+import { err, ok, Result } from "neverthrow";
 import {
   createMockPool,
   createMockQueryResult,
@@ -13,7 +14,6 @@ import {
 import type { Mock, vi } from "vitest";
 import { z, ZodError } from "zod";
 
-import { err, ok, Result } from "../tsResults.js";
 import { parse } from "../zod/index.js";
 
 type VitestUtils = typeof vi;
@@ -132,8 +132,8 @@ export function prepareBulkInsert<
     columnDefinitions.map(([columnName]) => columnName)
   );
 
-  if (headersParseResult.err) {
-    return err({ reason: "invalidHeaders", error: headersParseResult.val });
+  if (headersParseResult.isErr()) {
+    return err({ reason: "invalidHeaders", error: headersParseResult.error });
   }
 
   const columnTypes = columnDefinitions.map(
@@ -161,14 +161,14 @@ export function prepareBulkInsert<
           databaseRecord[columnName]
         );
 
-        if (parseDateResult.err) {
+        if (parseDateResult.isErr()) {
           return err({
             reason: "invalidRecordDate",
-            error: parseDateResult.val,
+            error: parseDateResult.error,
           });
         }
 
-        columns.push(parseDateResult.val.toISOString());
+        columns.push(parseDateResult.value.toISOString());
       }
 
       const column = databaseRecord[columnName];
@@ -181,7 +181,7 @@ export function prepareBulkInsert<
   }
 
   const columns = sql.join(
-    headersParseResult.val.map((header) => sql.identifier([header])),
+    headersParseResult.value.map((header) => sql.identifier([header])),
     sql.fragment`, `
   );
 

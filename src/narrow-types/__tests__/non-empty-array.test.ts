@@ -16,7 +16,7 @@ describe("concat()", () => {
   describe("given multiple arrays, the first one being a non-empty array", () => {
     describe("when called", () => {
       const result = concat(
-        makeNonEmptyArray(["a", "b", "c"]).unwrap(),
+        makeNonEmptyArray(["a", "b", "c"])._unsafeUnwrap(),
         ["d", "e"],
         [],
         ["f"]
@@ -35,15 +35,15 @@ describe("filter()", () => {
   describe("given a non-empty array and a predicate", () => {
     describe("when called", () => {
       const result = filter(
-        makeNonEmptyArray([0, 1, 2, 3, 4, 5, 6]).unwrap(),
+        makeNonEmptyArray([0, 1, 2, 3, 4, 5, 6])._unsafeUnwrap(),
         (value) => value % 2 === 0
       );
 
       it("returns a subset array", () => {
-        expect(result.some).toBe(true);
+        expect(result.isSome()).toBe(true);
 
-        if (result.some) {
-          expect(result.val).toEqual([0, 2, 4, 6]);
+        if (result.isSome()) {
+          expect(result.value).toEqual([0, 2, 4, 6]);
         } else {
           expect.fail();
         }
@@ -56,7 +56,7 @@ describe("flat()", () => {
   describe("given a non-empty array, a predicate and no depth parameter", () => {
     describe("when called", () => {
       const result = flat(
-        makeNonEmptyArray([0, [[1]], 2, [3], 4, [5, 6]]).unwrap()
+        makeNonEmptyArray([0, [[1]], 2, [3], 4, [5, 6]])._unsafeUnwrap()
       );
 
       it("returns a subset array", () => {
@@ -68,7 +68,7 @@ describe("flat()", () => {
   describe("given a non-empty array, a predicate and a depth parameter", () => {
     describe("when called", () => {
       const result = flat(
-        makeNonEmptyArray([0, [[1]], 2, [3], 4, [5, 6]]).unwrap(),
+        makeNonEmptyArray([0, [[1]], 2, [3], 4, [5, 6]])._unsafeUnwrap(),
         10
       );
 
@@ -83,7 +83,7 @@ describe("flatMap()", () => {
   describe("given a non-empty array, a predicate and no depth parameter", () => {
     describe("when called", () => {
       const result = flatMap(
-        makeNonEmptyArray([[0, 1, 2], [5], [0]]).unwrap(),
+        makeNonEmptyArray([[0, 1, 2], [5], [0]])._unsafeUnwrap(),
         (value) => value.reduce((a, b) => a + b, 0)
       );
 
@@ -142,7 +142,7 @@ describe("map()", () => {
   describe("given a non-empty array and a predicate", () => {
     describe("when called", () => {
       const result = map(
-        makeNonEmptyArray([1, 2, 3]).unwrap(),
+        makeNonEmptyArray([1, 2, 3])._unsafeUnwrap(),
         (value) => value * 2
       );
 
@@ -156,7 +156,7 @@ describe("map()", () => {
 describe("reverse()", () => {
   describe("given a non-empty array and a predicate", () => {
     describe("when called", () => {
-      const result = reverse(makeNonEmptyArray([1, 2, 3]).unwrap());
+      const result = reverse(makeNonEmptyArray([1, 2, 3])._unsafeUnwrap());
 
       it("returns the modified array", () => {
         expect(result).toEqual([3, 2, 1]);
@@ -168,13 +168,13 @@ describe("reverse()", () => {
 describe("slice()", () => {
   describe("given a non-empty array and a range in the array", () => {
     describe("when called", () => {
-      const result = slice(makeNonEmptyArray([1, 2, 3]).unwrap(), 1, 2);
+      const result = slice(makeNonEmptyArray([1, 2, 3])._unsafeUnwrap(), 1, 2);
 
       it("returns the slice array in a some", () => {
-        expect(result.some).toBe(true);
+        expect(result.isSome()).toBe(true);
 
-        if (result.some) {
-          expect(result.val).toEqual([2]);
+        if (result.isSome()) {
+          expect(result.value).toEqual([2]);
         } else {
           expect.fail();
         }
@@ -184,10 +184,10 @@ describe("slice()", () => {
 
   describe("given a non-empty array and a range outside the array", () => {
     describe("when called", () => {
-      const result = slice(makeNonEmptyArray([1, 2, 3]).unwrap(), 5);
+      const result = slice(makeNonEmptyArray([1, 2, 3])._unsafeUnwrap(), 5);
 
       it("returns none", () => {
-        expect(result.none).toBe(true);
+        expect(result.isNone()).toBe(true);
       });
     });
   });

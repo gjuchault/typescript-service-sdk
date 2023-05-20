@@ -14,13 +14,13 @@ describe("parse()", () => {
       const result = parse(z.string(), "foobar");
 
       it("returns a success", () => {
-        expect(result.ok);
+        expect(result.isOk()).toBe(true);
 
-        if (!result.ok) {
+        if (!result.isOk()) {
           expect.fail();
         }
 
-        expect(result.val).toBe("foobar");
+        expect(result.value).toBe("foobar");
       });
     });
   });
@@ -30,13 +30,13 @@ describe("parse()", () => {
       const result = parse(z.string(), 123);
 
       it("returns an error", () => {
-        expect(result.err);
+        expect(result.isErr()).toBe(true);
 
-        if (!result.err) {
+        if (!result.isErr()) {
           expect.fail();
         }
 
-        expect(result.val).toBeInstanceOf(ZodError);
+        expect(result.error).toBeInstanceOf(ZodError);
       });
     });
   });
@@ -50,13 +50,13 @@ describe("parseStringMinMax()", () => {
         const result = parseStringMinMax(input, { min: -100, max: 100 });
 
         it("returns an option containing a value", () => {
-          expect(result.some);
+          expect(result.isSome());
 
-          if (!result.some) {
+          if (!result.isSome()) {
             expect.fail();
           }
 
-          expect(result.val).toBeTypeOf("number");
+          expect(result.value).toBeTypeOf("number");
         });
       });
     }
@@ -69,9 +69,9 @@ describe("parseStringMinMax()", () => {
         const result = parseStringMinMax(input, { min: -100, max: 100 });
 
         it("returns an option containing a value", () => {
-          expect(result.none);
+          expect(result.isNone());
 
-          if (!result.none) {
+          if (!result.isNone()) {
             expect.fail();
           }
         });
@@ -86,13 +86,13 @@ describe("parseStringMinMaxInteger()", () => {
       const result = parseStringMinMaxInteger(input, { min: -100, max: 100 });
 
       it("returns an option containing a value", () => {
-        expect(result.some);
+        expect(result.isSome());
 
-        if (!result.some) {
+        if (!result.isSome()) {
           expect.fail();
         }
 
-        expect(result.val).toBeTypeOf("number");
+        expect(result.value).toBeTypeOf("number");
       });
     });
   });
@@ -104,9 +104,9 @@ describe("parseStringMinMaxInteger()", () => {
         const result = parseStringMinMaxInteger(input, { min: -100, max: 100 });
 
         it("returns an option containing a value", () => {
-          expect(result.none);
+          expect(result.isNone());
 
-          if (!result.none) {
+          if (!result.isNone()) {
             expect.fail();
           }
         });
@@ -134,13 +134,13 @@ describe("parseStringMs()", () => {
       const result = parseStringMs(input);
 
       it("returns an option containing a value", () => {
-        expect(result.some);
+        expect(result.isSome());
 
-        if (!result.some) {
+        if (!result.isSome()) {
           expect.fail();
         }
 
-        expect(result.val).toBeTypeOf("number");
+        expect(result.value).toBeTypeOf("number");
       });
     });
   });
@@ -150,9 +150,9 @@ describe("parseStringMs()", () => {
       const result = parseStringMs(input);
 
       it("returns an option containing a value", () => {
-        expect(result.none);
+        expect(result.isNone());
 
-        if (!result.none) {
+        if (!result.isNone()) {
           expect.fail();
         }
       });

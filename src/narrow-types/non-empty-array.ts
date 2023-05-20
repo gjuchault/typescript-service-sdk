@@ -1,6 +1,6 @@
 import { z, type ZodTypeAny } from "zod";
 
-import { none, type Option, some } from "../tsResults.js";
+import { none, type Option, some } from "../option.js";
 
 export function createNonEmptyArraySchema<T extends ZodTypeAny>(schema: T) {
   return z.array(schema).nonempty();
@@ -15,7 +15,7 @@ export function isNonEmptyArray<T>(
 }
 
 export function fromElements<T>(...input: NonEmptyArray<T>): NonEmptyArray<T> {
-  return makeNonEmptyArray([...input]).unwrap();
+  return makeNonEmptyArray([...input])._unsafeUnwrap();
 }
 
 /**
@@ -32,7 +32,7 @@ export function concat<TL>(
     result.push(...item);
   }
 
-  return makeNonEmptyArray(result).unwrap();
+  return makeNonEmptyArray(result)._unsafeUnwrap();
 }
 
 /**
@@ -60,7 +60,7 @@ export function flat<T>(
   input: NonEmptyArray<T>,
   depth?: number
 ): NonEmptyArray<T> {
-  return makeNonEmptyArray(input.flat(depth) as T[]).unwrap();
+  return makeNonEmptyArray(input.flat(depth) as T[])._unsafeUnwrap();
 }
 
 /**
@@ -78,7 +78,7 @@ export function flatMap<T, U>(
 ): NonEmptyArray<U> {
   return makeNonEmptyArray(
     input.flatMap((value, index, array) => predicate(value, index, array))
-  ).unwrap();
+  )._unsafeUnwrap();
 }
 
 /**
@@ -92,7 +92,7 @@ export function map<T, U>(
 ): NonEmptyArray<U> {
   return makeNonEmptyArray(
     input.map((value, index, number) => predicate(value, index, number))
-  ).unwrap();
+  )._unsafeUnwrap();
 }
 
 /**
@@ -123,5 +123,5 @@ export function slice<T>(
 }
 
 export function makeNonEmptyArray<T>(input: T[]): Option<NonEmptyArray<T>> {
-  return isNonEmptyArray(input) ? some(input) : none;
+  return isNonEmptyArray(input) ? some(input) : none();
 }
