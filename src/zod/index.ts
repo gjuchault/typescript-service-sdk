@@ -35,12 +35,12 @@ export function zodStringifiedNumber({
         : parseStringMinMax(valueAsString, { min, max })
       ).isSome()
     )
-    .transform((valueAsString) => {
+    .transform((valueAsString) =>
       (integer
         ? parseStringMinMaxInteger(valueAsString, { min, max })
         : parseStringMinMax(valueAsString, { min, max })
-      )._unsafeUnwrap();
-    });
+      )._unsafeUnwrap()
+    );
 }
 
 export function zodStringifiedMs() {
