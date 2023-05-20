@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { none, Option, some } from "../option";
+import { none, Option, some } from "../option.js";
 
 function getNone(): Option<string> {
   return none();

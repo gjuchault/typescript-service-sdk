@@ -2,7 +2,7 @@ import ms from "ms";
 import { err, ok, Result } from "neverthrow";
 import { z, type ZodError, type ZodType, type ZodTypeDef } from "zod";
 
-import { none, Option, some } from "../option";
+import { none, Option, some } from "../option.js";
 
 /**
  * validates an input against a zod schema and return a result from it
