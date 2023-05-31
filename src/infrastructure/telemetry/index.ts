@@ -1,5 +1,7 @@
 import {
   context,
+  Meter,
+  metrics as apiMetrics,
   propagation,
   Span,
   SpanOptions,
@@ -7,7 +9,6 @@ import {
   trace,
   Tracer,
 } from "@opentelemetry/api";
-import { Meter, metrics as apiMetrics } from "@opentelemetry/api-metrics";
 import { W3CTraceContextPropagator } from "@opentelemetry/core";
 import { PrometheusExporter } from "@opentelemetry/exporter-prometheus";
 import { Resource } from "@opentelemetry/resources";
@@ -39,7 +40,7 @@ type StartSpanCallback<TResolved> = (
   span: Span
 ) => Promise<TResolved> | TResolved;
 
-export async function createTelemetry({
+export function createTelemetry({
   config,
 }: {
   config: {
@@ -49,7 +50,7 @@ export async function createTelemetry({
     logLevel: LogLevel;
     tracingSampling: number;
   };
-}): Promise<Telemetry> {
+}): Telemetry {
   const logger = createLogger("telemetry", { config });
 
   const traceExporter: SpanExporter =
@@ -75,7 +76,7 @@ export async function createTelemetry({
 
   propagation.setGlobalPropagator(new W3CTraceContextPropagator());
 
-  await sdk.start();
+  sdk.start();
 
   const tracer = trace.getTracer(config.name, config.version);
 
