@@ -9,7 +9,7 @@ export function createNonEmptyArraySchema<T extends ZodTypeAny>(schema: T) {
 export type NonEmptyArray<T> = [T, ...T[]];
 
 export function isNonEmptyArray<T>(
-  input: T[] | readonly T[]
+  input: T[] | readonly T[],
 ): input is NonEmptyArray<T> {
   return input.length > 0;
 }
@@ -42,10 +42,10 @@ export function concat<TL>(
  */
 export function filter<T>(
   input: NonEmptyArray<T>,
-  predicate: (value: T, index: number, array: T[]) => boolean
+  predicate: (value: T, index: number, array: T[]) => boolean,
 ): Option<NonEmptyArray<T>> {
   return makeNonEmptyArray(
-    input.filter((value, index, array) => predicate(value, index, array))
+    input.filter((value, index, array) => predicate(value, index, array)),
   );
 }
 
@@ -58,7 +58,7 @@ export function filter<T>(
  */
 export function flat<T>(
   input: NonEmptyArray<T>,
-  depth?: number
+  depth?: number,
 ): NonEmptyArray<T> {
   return makeNonEmptyArray(input.flat(depth) as T[])._unsafeUnwrap();
 }
@@ -74,10 +74,10 @@ export function flat<T>(
  */
 export function flatMap<T, U>(
   input: NonEmptyArray<T>,
-  predicate: (value: T, index: number, array: T[]) => U | readonly U[]
+  predicate: (value: T, index: number, array: T[]) => U | readonly U[],
 ): NonEmptyArray<U> {
   return makeNonEmptyArray(
-    input.flatMap((value, index, array) => predicate(value, index, array))
+    input.flatMap((value, index, array) => predicate(value, index, array)),
   )._unsafeUnwrap();
 }
 
@@ -88,10 +88,10 @@ export function flatMap<T, U>(
  */
 export function map<T, U>(
   input: NonEmptyArray<T>,
-  predicate: (value: T, index: number, array: T[]) => U
+  predicate: (value: T, index: number, array: T[]) => U,
 ): NonEmptyArray<U> {
   return makeNonEmptyArray(
-    input.map((value, index, number) => predicate(value, index, number))
+    input.map((value, index, number) => predicate(value, index, number)),
   )._unsafeUnwrap();
 }
 
@@ -117,7 +117,7 @@ export function reverse<T>(input: NonEmptyArray<T>): NonEmptyArray<T> {
 export function slice<T>(
   input: NonEmptyArray<T>,
   start?: number,
-  end?: number
+  end?: number,
 ): Option<NonEmptyArray<T>> {
   return makeNonEmptyArray(input.slice(start, end));
 }

@@ -1,13 +1,13 @@
 export function promiseWithTimeout<T>(
   timeoutMs: number,
-  promise: () => Promise<T>
+  promise: () => Promise<T>,
 ): Promise<T> {
   let timeoutHandle: NodeJS.Timeout;
 
   const timeoutPromise = new Promise<never>((_resolve, reject) => {
     timeoutHandle = setTimeout(
       () => reject(new Error("Promise timed out")),
-      timeoutMs
+      timeoutMs,
     );
   });
 

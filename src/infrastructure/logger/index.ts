@@ -13,7 +13,7 @@ export function createMockLogger(): Logger {
 
 export function createLogger(
   serviceName: string,
-  { config }: { config: { logLevel: LogLevel } }
+  { config }: { config: { logLevel: LogLevel } },
 ): Logger {
   const logger = pino({
     name: "app",

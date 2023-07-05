@@ -59,7 +59,7 @@ describe("parseStringMinMax()", () => {
           expect(result.value).toBeTypeOf("number");
         });
       });
-    }
+    },
   );
 
   describe.each(["foobar", "-200", "-100.01", "100.01", "200"])(
@@ -76,7 +76,7 @@ describe("parseStringMinMax()", () => {
           }
         });
       });
-    }
+    },
   );
 });
 
@@ -111,7 +111,7 @@ describe("parseStringMinMaxInteger()", () => {
           }
         });
       });
-    }
+    },
   );
 });
 

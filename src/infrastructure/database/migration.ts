@@ -24,7 +24,7 @@ export function buildMigration({
   async function executed() {
     await ensureTable();
     const migrations = await database.anyFirst(sql.type(
-      z.object({ name: z.string() })
+      z.object({ name: z.string() }),
     )`
       select "name"
       from "public"."migrations"
@@ -69,7 +69,7 @@ export function buildMigration({
  */
 export async function extractMigrations(
   database: Database,
-  migrationsFilesAbsolutePaths: string[]
+  migrationsFilesAbsolutePaths: string[],
 ) {
   return await Promise.all(
     migrationsFilesAbsolutePaths
@@ -88,6 +88,6 @@ export async function extractMigrations(
             // no support for down migrations
           },
         };
-      })
+      }),
   );
 }

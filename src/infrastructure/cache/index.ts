@@ -50,7 +50,7 @@ export async function createCacheStorage({
       logger.info("connected to redis");
 
       return redis;
-    }
+    },
   );
 }
 

@@ -53,6 +53,6 @@ export async function createDatabase({
       logger.info(`connected to database`);
 
       return pool;
-    }
+    },
   );
 }

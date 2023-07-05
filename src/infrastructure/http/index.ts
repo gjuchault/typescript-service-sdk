@@ -63,7 +63,7 @@ export async function createHttpServer({
 
   await httpServer.register(
     openTelemetryPlugin,
-    createOpenTelemetryPluginOptions({ config })
+    createOpenTelemetryPluginOptions({ config }),
   );
   await httpServer.register(metricsPlugin, telemetry);
 
@@ -91,7 +91,7 @@ export async function createHttpServer({
     },
     function (_request, reply) {
       void reply.code(404).send();
-    }
+    },
   );
 
   httpServer.addHook("onRequest", (request, _response, done) => {
@@ -117,7 +117,7 @@ export async function createHttpServer({
         userAgent: request.headers["user-agent"],
         responseTime: Math.ceil(reply.getResponseTime()),
         httpStatusCode: reply.statusCode,
-      }
+      },
     );
 
     done();
