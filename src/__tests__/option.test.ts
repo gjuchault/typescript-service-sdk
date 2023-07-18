@@ -183,7 +183,7 @@ describe("andThen()", () => {
 
   describe("given a none and a mapper that returns a none", () => {
     const option = getNone();
-    function mapper(value: string) {
+    function mapper() {
       return getNone();
     }
 
