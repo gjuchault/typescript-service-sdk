@@ -22,7 +22,6 @@
     "socio",
     "tablename",
     "timestamptz",
-    "trpc",
     "typescript-service-sdk",
     "umzug",
     "unlog",
