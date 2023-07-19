@@ -45,7 +45,7 @@ function genericReturnTypeWrapper<TRouter extends AppRouter>() {
   return initServer().router<TRouter>({} as never, {} as never);
 }
 
-type InitializedRouter<TRouter extends AppRouter> = ReturnType<
+export type InitializedRouter<TRouter extends AppRouter> = ReturnType<
   typeof genericReturnTypeWrapper<TRouter>
 >;
 
