@@ -41,7 +41,15 @@ export type HttpReply = FastifyReply;
 
 const requestTimeout = ms("120s");
 
-export async function createHttpServer({
+function genericReturnTypeWrapper<TRouter extends AppRouter>() {
+  return initServer().router<TRouter>({} as never, {} as never);
+}
+
+type InitializedRouter<TRouter extends AppRouter> = ReturnType<
+  typeof genericReturnTypeWrapper<TRouter>
+>;
+
+export async function createHttpServer<TRouter extends AppRouter>({
   config,
   cache,
   telemetry,
@@ -50,7 +58,7 @@ export async function createHttpServer({
   config: { name: string; version: string; logLevel: LogLevel; secret: string };
   cache: Cache;
   telemetry: Telemetry;
-  appRouter: ReturnType<ReturnType<typeof initServer>["router"]>;
+  appRouter: InitializedRouter<TRouter>;
 }) {
   const logger = createLogger("http", { config });
 
