@@ -18,11 +18,13 @@ import {
   SpanExporter,
   TraceIdRatioBasedSampler,
 } from "@opentelemetry/sdk-trace-base";
-import { SemanticResourceAttributes } from "@opentelemetry/semantic-conventions";
+import { default as SemanticConventions } from "@opentelemetry/semantic-conventions";
 
 import { createLogger, type LogLevel } from "../logger/index.js";
 import { bindSystemMetrics } from "./metrics/system.js";
 import { createPinoSpanExporter } from "./pino-exporter.js";
+
+const { SemanticResourceAttributes } = SemanticConventions;
 
 export interface Telemetry {
   metrics: Meter;
