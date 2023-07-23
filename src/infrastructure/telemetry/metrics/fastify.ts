@@ -1,8 +1,10 @@
-import { ValueType } from "@opentelemetry/api";
 import type { FastifyInstance, FastifyRequest } from "fastify";
 import fp from "fastify-plugin";
 
+import { api } from "../../../opentelemetry/index.js";
 import type { Telemetry } from "../index.js";
+
+const { ValueType } = api;
 
 const ignoredPaths = new Set<string>();
 

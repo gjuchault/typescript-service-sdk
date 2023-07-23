@@ -1,18 +1,22 @@
-import { err, ok, Result } from "neverthrow";
+import type { Result } from "neverthrow";
+import { err, ok } from "neverthrow";
+import type {
+  DatabasePool,
+  ListSqlToken,
+  PrimitiveValueExpression,
+  QueryResult,
+  QueryResultRow,
+  UnnestSqlToken,
+} from "slonik";
 import {
   createMockPool,
   createMockQueryResult,
-  type DatabasePool,
-  type ListSqlToken,
-  type PrimitiveValueExpression,
-  type QueryResult,
-  type QueryResultRow,
   SlonikError,
   sql,
-  type UnnestSqlToken,
 } from "slonik";
 import type { Mock, vi } from "vitest";
-import { z, ZodError } from "zod";
+import type { ZodError } from "zod";
+import { z } from "zod";
 
 import { parse } from "../zod/index.js";
 

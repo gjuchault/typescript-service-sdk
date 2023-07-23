@@ -2,8 +2,9 @@ import { Redis } from "ioredis";
 import ms from "ms";
 
 import { promiseWithTimeout } from "../../helpers/promise-with-timeout.js";
-import { createLogger, type LogLevel } from "../logger/index.js";
-import { type Telemetry } from "../telemetry/index.js";
+import type { LogLevel } from "../logger/index.js";
+import { createLogger } from "../logger/index.js";
+import type { Telemetry } from "../telemetry/index.js";
 import { getSpanOptions } from "../telemetry/instrumentations/ioredis.js";
 
 interface Dependencies {

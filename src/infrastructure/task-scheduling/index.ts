@@ -1,10 +1,12 @@
 import path from "node:path";
 import url from "node:url";
 
-import { Job, JobsOptions, Queue, scriptLoader, Worker } from "bullmq";
+import type { Job, JobsOptions } from "bullmq";
+import { Queue, scriptLoader, Worker } from "bullmq";
 
 import type { Cache } from "../cache/index.js";
-import { createLogger, type LogLevel } from "../logger/index.js";
+import type { LogLevel } from "../logger/index.js";
+import { createLogger } from "../logger/index.js";
 import type { Telemetry } from "../telemetry/index.js";
 import { getSpanOptions } from "../telemetry/instrumentations/bullmq.js";
 

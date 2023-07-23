@@ -1,4 +1,5 @@
-import { Logger as PinoLogger, pino } from "pino";
+import type { Logger as PinoLogger } from "pino";
+import { pino } from "pino";
 
 import { pinoMixin as telemetryMixin } from "../telemetry/instrumentations/pino.js";
 

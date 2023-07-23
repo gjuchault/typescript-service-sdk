@@ -1,30 +1,36 @@
-import {
-  context,
+import type {
   Meter,
-  metrics as apiMetrics,
-  propagation,
+  PrometheusExporter,
+  SdkTraceBaseSpanExporter,
   Span,
   SpanOptions,
-  SpanStatusCode,
-  trace,
   Tracer,
-} from "@opentelemetry/api";
-import { W3CTraceContextPropagator } from "@opentelemetry/core";
-import { PrometheusExporter } from "@opentelemetry/exporter-prometheus";
-import { Resource } from "@opentelemetry/resources";
-import { NodeSDK } from "@opentelemetry/sdk-node";
+} from "../../opentelemetry/index.js";
 import {
-  InMemorySpanExporter,
-  SpanExporter,
-  TraceIdRatioBasedSampler,
-} from "@opentelemetry/sdk-trace-base";
-import { default as SemanticConventions } from "@opentelemetry/semantic-conventions";
-
-import { createLogger, type LogLevel } from "../logger/index.js";
+  api,
+  core,
+  exporterPrometheus,
+  resources,
+  sdkNode,
+  sdkTraceBase,
+  semanticConventions,
+} from "../../opentelemetry/index.js";
+import type { LogLevel } from "../logger/index.js";
+import { createLogger } from "../logger/index.js";
 import { bindSystemMetrics } from "./metrics/system.js";
 import { createPinoSpanExporter } from "./pino-exporter.js";
 
-const { SemanticResourceAttributes } = SemanticConventions;
+const { W3CTraceContextPropagator } = core;
+const { Resource } = resources;
+const { InMemorySpanExporter, TraceIdRatioBasedSampler } = sdkTraceBase;
+const { SemanticResourceAttributes } = semanticConventions;
+const {
+  context,
+  metrics: apiMetrics,
+  propagation,
+  trace,
+  SpanStatusCode,
+} = api;
 
 export interface Telemetry {
   metrics: Meter;
@@ -55,16 +61,16 @@ export function createTelemetry({
 }): Telemetry {
   const logger = createLogger("telemetry", { config });
 
-  const traceExporter: SpanExporter =
+  const traceExporter: SdkTraceBaseSpanExporter =
     config.env === "production"
       ? createPinoSpanExporter({ logger })
       : new InMemorySpanExporter();
 
-  const metricReader = new PrometheusExporter({
+  const metricReader = new exporterPrometheus.PrometheusExporter({
     preventServerStart: true,
   });
 
-  const sdk = new NodeSDK({
+  const sdk = new sdkNode.NodeSDK({
     traceExporter,
     metricReader,
     sampler: new TraceIdRatioBasedSampler(config.tracingSampling),

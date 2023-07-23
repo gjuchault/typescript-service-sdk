@@ -1,4 +1,6 @@
-import { context, trace } from "@opentelemetry/api";
+import { api } from "../../../opentelemetry/index.js";
+
+const { context, trace } = api;
 
 export function pinoMixin(data: object) {
   const span = trace.getSpan(context.active());
