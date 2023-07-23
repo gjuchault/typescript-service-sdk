@@ -59,10 +59,10 @@ export function createShutdownManager({
     async function gracefulShutdown() {
       await Promise.all(taskScheduling.allQueues.map((queue) => queue.close()));
       await Promise.all(
-        taskScheduling.allWorkers.map((worker) => worker.close())
+        taskScheduling.allWorkers.map((worker) => worker.close()),
       );
       await Promise.all(
-        taskScheduling.allConnections.map((cache) => cache.quit())
+        taskScheduling.allConnections.map((cache) => cache.quit()),
       );
       logger.debug("task scheduling shut down");
       await httpTerminator.terminate();
@@ -101,7 +101,7 @@ export function createShutdownManager({
           nodeVersion: process.version,
           arch: process.arch,
           platform: process.platform,
-        }
+        },
       );
 
       if (shouldExit) {

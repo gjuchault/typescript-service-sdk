@@ -13,7 +13,7 @@ export const metricsPlugin = fp(innerMetricsPlugin);
 function innerMetricsPlugin(
   httpServer: FastifyInstance,
   options: Telemetry,
-  done: () => void
+  done: () => void,
 ) {
   const { metrics, metricReader } = options;
 
@@ -27,7 +27,7 @@ function innerMetricsPlugin(
       description: "Duration of HTTP requests in microseconds",
       unit: "milliseconds",
       valueType: ValueType.DOUBLE,
-    }
+    },
   );
 
   const durationMap = new WeakMap<FastifyRequest, number>();
@@ -53,7 +53,7 @@ function innerMetricsPlugin(
       {
         httpMethod: request.method,
         httpRoute: request.routerPath,
-      }
+      },
     );
 
     done();

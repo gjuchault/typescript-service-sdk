@@ -14,7 +14,7 @@ import { none, some } from "../option.js";
  */
 export function parse<TOutput, TInput>(
   schema: ZodType<TOutput, ZodTypeDef, TInput>,
-  input: unknown
+  input: unknown,
 ): Result<TOutput, ZodError<TInput>> {
   const zodResult = schema.safeParse(input);
 
@@ -36,13 +36,13 @@ export function zodStringifiedNumber({
       (integer
         ? parseStringMinMaxInteger(valueAsString, { min, max })
         : parseStringMinMax(valueAsString, { min, max })
-      ).isSome()
+      ).isSome(),
     )
     .transform((valueAsString) =>
       (integer
         ? parseStringMinMaxInteger(valueAsString, { min, max })
         : parseStringMinMax(valueAsString, { min, max })
-      )._unsafeUnwrap()
+      )._unsafeUnwrap(),
     );
 }
 
@@ -80,7 +80,7 @@ export function parseStringMs(valueAsString: string): Option<number> {
  */
 export function parseStringMinMaxInteger(
   valueAsString: string,
-  range: { min: number; max: number }
+  range: { min: number; max: number },
 ): Option<number> {
   const value = Number(valueAsString);
 
@@ -99,7 +99,7 @@ export function parseStringMinMaxInteger(
  */
 export function parseStringMinMax(
   valueAsString: string,
-  range: { min: number; max: number }
+  range: { min: number; max: number },
 ): Option<number> {
   const value = Number(valueAsString);
 

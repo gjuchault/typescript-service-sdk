@@ -1,11 +1,18 @@
 import type { Result } from "neverthrow";
 import { err, ok } from "neverthrow";
-import type {DatabasePool, ListSqlToken, PrimitiveValueExpression, QueryResult, QueryResultRow, UnnestSqlToken} from "slonik";
+import type {
+  DatabasePool,
+  ListSqlToken,
+  PrimitiveValueExpression,
+  QueryResult,
+  QueryResultRow,
+  UnnestSqlToken,
+} from "slonik";
 import {
   createMockPool,
   createMockQueryResult,
   SlonikError,
-  sql
+  sql,
 } from "slonik";
 import type { Mock, vi } from "vitest";
 import type { ZodError } from "zod";

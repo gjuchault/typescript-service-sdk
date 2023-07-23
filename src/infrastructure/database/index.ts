@@ -1,4 +1,4 @@
-import type { DatabasePool} from "slonik";
+import type { DatabasePool } from "slonik";
 import { createPool, sql } from "slonik";
 import { z } from "zod";
 

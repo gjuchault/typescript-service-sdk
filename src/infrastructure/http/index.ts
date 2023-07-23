@@ -68,7 +68,7 @@ export async function createHttpServer<TRouter extends AppRouter>({
 
   await httpServer.register(
     openTelemetryPlugin.default,
-    createOpenTelemetryPluginOptions({ config })
+    createOpenTelemetryPluginOptions({ config }),
   );
   await httpServer.register(metricsPlugin, telemetry);
 
@@ -96,7 +96,7 @@ export async function createHttpServer<TRouter extends AppRouter>({
     },
     function (_request, reply) {
       void reply.code(404).send();
-    }
+    },
   );
 
   httpServer.addHook("onRequest", (request, _response, done) => {
@@ -122,7 +122,7 @@ export async function createHttpServer<TRouter extends AppRouter>({
         userAgent: request.headers["user-agent"],
         responseTime: Math.ceil(reply.getResponseTime()),
         httpStatusCode: reply.statusCode,
-      }
+      },
     );
 
     done();
@@ -158,8 +158,8 @@ export async function createHttpServer<TRouter extends AppRouter>({
             version: config.version,
           },
         },
-        { setOperationId: true }
-      )
+        { setOperationId: true },
+      ),
     );
   });
 
@@ -178,7 +178,7 @@ type AppRouteImplementation<T extends AppRoute> = (
   input: ServerInferRequest<T, FastifyRequest["headers"]> & {
     request: FastifyRequest;
     reply: FastifyReply;
-  }
+  },
 ) => Promise<ServerInferResponses<T>>;
 
 export type RouterImplementation<T extends AppRouter> = {

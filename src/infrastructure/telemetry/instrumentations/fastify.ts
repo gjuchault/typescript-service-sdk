@@ -75,7 +75,7 @@ export function createOpenTelemetryPluginOptions({
   };
 
   function getRequestContentLength(
-    request: FastifyRequest
+    request: FastifyRequest,
   ): Record<string, number> | undefined {
     const length = Number(request.headers["content-length"]);
 

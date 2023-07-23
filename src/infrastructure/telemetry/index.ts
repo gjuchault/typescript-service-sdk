@@ -39,13 +39,13 @@ export interface Telemetry {
   startSpan<TResolved>(
     name: string,
     options: SpanOptions | undefined,
-    callback: StartSpanCallback<TResolved>
+    callback: StartSpanCallback<TResolved>,
   ): Promise<TResolved>;
   shutdown(): Promise<void>;
 }
 
 type StartSpanCallback<TResolved> = (
-  span: Span
+  span: Span,
 ) => Promise<TResolved> | TResolved;
 
 export function createTelemetry({
@@ -95,7 +95,7 @@ export function createTelemetry({
   async function startSpan<TResolved>(
     name: string,
     options: SpanOptions | undefined,
-    callback: StartSpanCallback<TResolved>
+    callback: StartSpanCallback<TResolved>,
   ): Promise<TResolved> {
     const span = tracer.startSpan(name, options);
     const traceContext = trace.setSpan(context.active(), span);
