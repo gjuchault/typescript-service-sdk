@@ -1,8 +1,9 @@
-import { SpanKind } from "@opentelemetry/api";
-import { default as SemanticConventions } from "@opentelemetry/semantic-conventions";
 import type { Job, Worker } from "bullmq";
 
-const { DbSystemValues, SemanticAttributes } = SemanticConventions;
+import { api, semanticConventions } from "../../../opentelemetry/index.js";
+
+const { SpanKind } = api;
+const { DbSystemValues, SemanticAttributes } = semanticConventions;
 
 const bullMqAttributes = {
   JOB_ATTEMPTS: `messaging.bullmq.job.attempts`,

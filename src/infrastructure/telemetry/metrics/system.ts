@@ -1,9 +1,13 @@
-import perfHooks, { Histogram, NodeGCPerformanceDetail } from "node:perf_hooks";
+import type { Histogram, NodeGCPerformanceDetail } from "node:perf_hooks";
+import perfHooks from "node:perf_hooks";
 
-import { Meter, ValueType } from "@opentelemetry/api";
 import { match } from "ts-pattern";
 
 import { noop } from "../../../noop.js";
+import type { Meter } from "../../../opentelemetry/index.js";
+import { api } from "../../../opentelemetry/index.js";
+
+const { ValueType } = api;
 
 // https://github.com/siimon/prom-client/blob/master/lib/metrics
 
@@ -23,7 +27,7 @@ export function bindSystemMetrics({ metrics }: { metrics: Meter }) {
         description: `${key} event loop lag in seconds`,
         unit: "seconds",
         valueType: ValueType.DOUBLE,
-      },
+      }
     );
 
     gauge.addCallback((observableResult) => {
@@ -32,7 +36,7 @@ export function bindSystemMetrics({ metrics }: { metrics: Meter }) {
         .with("max", () => observableResult.observe(eventLoopDelay.max / 1e9))
         .with("mean", () => observableResult.observe(eventLoopDelay.mean / 1e9))
         .with("stddev", () =>
-          observableResult.observe(eventLoopDelay.stddev / 1e9),
+          observableResult.observe(eventLoopDelay.stddev / 1e9)
         )
         .with("percentiles", noop)
         .with("exceeds", noop)
@@ -50,7 +54,7 @@ export function bindSystemMetrics({ metrics }: { metrics: Meter }) {
         description: `The ${percentile.toString()}th percentile of the recorded event loop delays`,
         unit: "seconds",
         valueType: ValueType.DOUBLE,
-      },
+      }
     );
 
     gauge.addCallback((observableResult) => {
@@ -104,7 +108,7 @@ export function bindSystemMetrics({ metrics }: { metrics: Meter }) {
         description: `${key} size in bytes`,
         unit: "bytes",
         valueType: ValueType.INT,
-      },
+      }
     );
 
     gauge.addCallback((observableResult) => {
@@ -139,7 +143,7 @@ export function bindSystemMetrics({ metrics }: { metrics: Meter }) {
         description: `Total ${key} CPU time spent in seconds`,
         unit: "seconds",
         valueType: ValueType.DOUBLE,
-      },
+      }
     );
 
     gauge.addCallback((observableResult) => {
@@ -172,7 +176,7 @@ export function bindSystemMetrics({ metrics }: { metrics: Meter }) {
       description: "Number of active handles",
       unit: "handles",
       valueType: ValueType.INT,
-    },
+    }
   );
 
   processHandlesGauge.addCallback((observableResult) => {
@@ -189,7 +193,7 @@ export function bindSystemMetrics({ metrics }: { metrics: Meter }) {
       description: "Start time of the process in seconds unix timestamp",
       unit: "seconds",
       valueType: ValueType.INT,
-    },
+    }
   );
 
   processStartTimeGauge.addCallback((observableResult) => {
@@ -202,7 +206,7 @@ export function bindSystemMetrics({ metrics }: { metrics: Meter }) {
       description: "Up time of the process in seconds",
       unit: "seconds",
       valueType: ValueType.INT,
-    },
+    }
   );
 
   processUpTimeGauge.addCallback((observableResult) => {

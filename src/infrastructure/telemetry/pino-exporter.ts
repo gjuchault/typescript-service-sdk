@@ -1,13 +1,14 @@
-import { ExportResultCode, hrTimeToMicroseconds } from "@opentelemetry/core";
-import { SpanExporter } from "@opentelemetry/sdk-trace-base";
-
+import type { SdkTraceBaseSpanExporter } from "../../opentelemetry/index.js";
+import { core } from "../../opentelemetry/index.js";
 import type { Logger } from "../logger/index.js";
+
+const { ExportResultCode, hrTimeToMicroseconds } = core;
 
 export function createPinoSpanExporter({
   logger,
 }: {
   logger: Logger;
-}): SpanExporter {
+}): SdkTraceBaseSpanExporter {
   return {
     export(spans, callback) {
       for (const span of spans) {

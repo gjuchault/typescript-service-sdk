@@ -1,14 +1,16 @@
-import { context, trace } from "@opentelemetry/api";
 import { createHttpTerminator } from "http-terminator";
 import ms from "ms";
 
 import { promiseWithTimeout } from "../../helpers/promise-with-timeout.js";
 import type { HttpServer } from "../../infrastructure/http/index.js";
+import { api } from "../../opentelemetry/index.js";
 import type { Cache } from "../cache/index.js";
 import type { Database } from "../database/index.js";
 import type { Logger } from "../logger/index.js";
 import type { TaskScheduling } from "../task-scheduling/index.js";
 import type { Telemetry } from "../telemetry/index.js";
+
+const { context, trace } = api;
 
 interface Dependencies {
   logger: Logger;
@@ -57,10 +59,10 @@ export function createShutdownManager({
     async function gracefulShutdown() {
       await Promise.all(taskScheduling.allQueues.map((queue) => queue.close()));
       await Promise.all(
-        taskScheduling.allWorkers.map((worker) => worker.close()),
+        taskScheduling.allWorkers.map((worker) => worker.close())
       );
       await Promise.all(
-        taskScheduling.allConnections.map((cache) => cache.quit()),
+        taskScheduling.allConnections.map((cache) => cache.quit())
       );
       logger.debug("task scheduling shut down");
       await httpTerminator.terminate();
@@ -99,7 +101,7 @@ export function createShutdownManager({
           nodeVersion: process.version,
           arch: process.arch,
           platform: process.platform,
-        },
+        }
       );
 
       if (shouldExit) {

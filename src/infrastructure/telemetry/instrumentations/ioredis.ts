@@ -1,7 +1,7 @@
-import { SpanKind } from "@opentelemetry/api";
-import { default as SemanticConventions } from "@opentelemetry/semantic-conventions";
+import { api, semanticConventions } from "../../../opentelemetry/index.js";
 
-const { DbSystemValues, SemanticAttributes } = SemanticConventions;
+const { SpanKind } = api;
+const { DbSystemValues, SemanticAttributes } = semanticConventions;
 
 export function getSpanOptions(url: string) {
   return {

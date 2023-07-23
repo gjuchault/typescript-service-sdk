@@ -1,10 +1,11 @@
-import { Span, SpanKind } from "@opentelemetry/api";
-import { default as SemanticConventions } from "@opentelemetry/semantic-conventions";
-import { Interceptor, QueryContext } from "slonik";
+import type { Interceptor, QueryContext } from "slonik";
 
+import type { Span } from "../../../opentelemetry/index.js";
+import { api, semanticConventions } from "../../../opentelemetry/index.js";
 import type { Telemetry } from "../index.js";
 
-const { DbSystemValues, SemanticAttributes } = SemanticConventions;
+const { SpanKind } = api;
+const { DbSystemValues, SemanticAttributes } = semanticConventions;
 
 export const PG_VALUES = "db.postgresql.values";
 export const IDLE_TIMEOUT_MILLIS = "db.postgresql.idle.timeout.millis";

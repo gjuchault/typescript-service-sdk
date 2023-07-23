@@ -1,7 +1,8 @@
 import fs from "node:fs/promises";
 
 import { sql } from "slonik";
-import { InputMigrations, Umzug } from "umzug";
+import type { InputMigrations} from "umzug";
+import { Umzug } from "umzug";
 import { z } from "zod";
 
 import type { Database } from "./index.js";

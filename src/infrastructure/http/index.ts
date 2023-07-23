@@ -10,7 +10,7 @@ import helmet from "@fastify/helmet";
 import multipart from "@fastify/multipart";
 import rateLimit from "@fastify/rate-limit";
 import underPressure from "@fastify/under-pressure";
-import {
+import type {
   AppRoute,
   AppRouter,
   ServerInferRequest,
@@ -18,18 +18,12 @@ import {
 } from "@ts-rest/core";
 import { initServer } from "@ts-rest/fastify";
 import { generateOpenApi } from "@ts-rest/open-api";
-import {
-  fastify,
-  type FastifyInstance,
-  type FastifyReply,
-  type FastifyRequest,
-} from "fastify";
+import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
+import { fastify } from "fastify";
 import ms from "ms";
 
-import {
-  createLogger,
-  type LogLevel,
-} from "../../infrastructure/logger/index.js";
+import type { LogLevel } from "../../infrastructure/logger/index.js";
+import { createLogger } from "../../infrastructure/logger/index.js";
 import { createOpenTelemetryPluginOptions } from "../../infrastructure/telemetry/instrumentations/fastify.js";
 import { metricsPlugin } from "../../infrastructure/telemetry/metrics/fastify.js";
 import type { Cache } from "../cache/index.js";
@@ -73,8 +67,8 @@ export async function createHttpServer<TRouter extends AppRouter>({
   });
 
   await httpServer.register(
-    openTelemetryPlugin,
-    createOpenTelemetryPluginOptions({ config }),
+    openTelemetryPlugin.default,
+    createOpenTelemetryPluginOptions({ config })
   );
   await httpServer.register(metricsPlugin, telemetry);
 
@@ -102,7 +96,7 @@ export async function createHttpServer<TRouter extends AppRouter>({
     },
     function (_request, reply) {
       void reply.code(404).send();
-    },
+    }
   );
 
   httpServer.addHook("onRequest", (request, _response, done) => {
@@ -128,7 +122,7 @@ export async function createHttpServer<TRouter extends AppRouter>({
         userAgent: request.headers["user-agent"],
         responseTime: Math.ceil(reply.getResponseTime()),
         httpStatusCode: reply.statusCode,
-      },
+      }
     );
 
     done();
@@ -164,8 +158,8 @@ export async function createHttpServer<TRouter extends AppRouter>({
             version: config.version,
           },
         },
-        { setOperationId: true },
-      ),
+        { setOperationId: true }
+      )
     );
   });
 
@@ -184,7 +178,7 @@ type AppRouteImplementation<T extends AppRoute> = (
   input: ServerInferRequest<T, FastifyRequest["headers"]> & {
     request: FastifyRequest;
     reply: FastifyReply;
-  },
+  }
 ) => Promise<ServerInferResponses<T>>;
 
 export type RouterImplementation<T extends AppRouter> = {

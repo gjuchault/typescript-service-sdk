@@ -1,8 +1,11 @@
 import ms from "ms";
-import { err, ok, Result } from "neverthrow";
-import { z, type ZodError, type ZodType, type ZodTypeDef } from "zod";
+import type { Result } from "neverthrow";
+import { err, ok } from "neverthrow";
+import type { ZodError, ZodType, ZodTypeDef } from "zod";
+import { z } from "zod";
 
-import { none, Option, some } from "../option.js";
+import type { Option } from "../option.js";
+import { none, some } from "../option.js";
 
 /**
  * validates an input against a zod schema and return a result from it
@@ -11,7 +14,7 @@ import { none, Option, some } from "../option.js";
  */
 export function parse<TOutput, TInput>(
   schema: ZodType<TOutput, ZodTypeDef, TInput>,
-  input: unknown,
+  input: unknown
 ): Result<TOutput, ZodError<TInput>> {
   const zodResult = schema.safeParse(input);
 
@@ -33,13 +36,13 @@ export function zodStringifiedNumber({
       (integer
         ? parseStringMinMaxInteger(valueAsString, { min, max })
         : parseStringMinMax(valueAsString, { min, max })
-      ).isSome(),
+      ).isSome()
     )
     .transform((valueAsString) =>
       (integer
         ? parseStringMinMaxInteger(valueAsString, { min, max })
         : parseStringMinMax(valueAsString, { min, max })
-      )._unsafeUnwrap(),
+      )._unsafeUnwrap()
     );
 }
 
@@ -77,7 +80,7 @@ export function parseStringMs(valueAsString: string): Option<number> {
  */
 export function parseStringMinMaxInteger(
   valueAsString: string,
-  range: { min: number; max: number },
+  range: { min: number; max: number }
 ): Option<number> {
   const value = Number(valueAsString);
 
@@ -96,7 +99,7 @@ export function parseStringMinMaxInteger(
  */
 export function parseStringMinMax(
   valueAsString: string,
-  range: { min: number; max: number },
+  range: { min: number; max: number }
 ): Option<number> {
   const value = Number(valueAsString);
 

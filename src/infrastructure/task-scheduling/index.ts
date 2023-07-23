@@ -1,10 +1,12 @@
 import path from "node:path";
 import url from "node:url";
 
-import { Job, JobsOptions, Queue, scriptLoader, Worker } from "bullmq";
+import type { Job, JobsOptions } from "bullmq";
+import { Queue, scriptLoader, Worker } from "bullmq";
 
 import type { Cache } from "../cache/index.js";
-import { createLogger, type LogLevel } from "../logger/index.js";
+import type { LogLevel } from "../logger/index.js";
+import { createLogger } from "../logger/index.js";
 import type { Telemetry } from "../telemetry/index.js";
 import { getSpanOptions } from "../telemetry/instrumentations/bullmq.js";
 
@@ -20,7 +22,7 @@ export interface TaskScheduling {
   createTask<TPayload>(
     taskName: string,
     processFunction: (job: Job<TPayload>) => Promise<void>,
-    workersCount?: number,
+    workersCount?: number
   ): Promise<(payloads: TPayload[], options?: JobsOptions) => Promise<void>>;
   allWorkers: Worker[];
   allQueues: Queue[];
@@ -44,7 +46,7 @@ export function createTaskScheduling({
     }
 
     const scripts = await scriptLoader.loadScripts(
-      path.join(__dirname, "./bullmq-commands"),
+      path.join(__dirname, "./bullmq-commands")
     );
     for (const command of scripts) {
       if (!(client as unknown as Record<string, unknown>)[command.name]) {
@@ -57,7 +59,7 @@ export function createTaskScheduling({
     async createTask<TPayload>(
       taskName: string,
       processFunction: (job: Job<TPayload>) => Promise<void>,
-      workersCount = 1,
+      workersCount = 1
     ) {
       const name = `${config.name}-task-scheduling-${taskName}`;
       const logger = createLogger(`task-scheduling-${taskName}`, {
@@ -89,10 +91,10 @@ export function createTaskScheduling({
                 taskName,
                 url: config.redisUrl,
               }),
-              () => processFunction(job),
+              () => processFunction(job)
             );
           },
-          { connection: workerConnection },
+          { connection: workerConnection }
         );
 
         await worker.waitUntilReady();
@@ -122,7 +124,7 @@ export function createTaskScheduling({
 
       return async function enqueue(
         payloads: TPayload[],
-        options?: JobsOptions,
+        options?: JobsOptions
       ) {
         logger.debug(`enqueuing ${taskName}`, {
           payloads,
@@ -130,7 +132,7 @@ export function createTaskScheduling({
         });
 
         await queue.addBulk(
-          payloads.map((data) => ({ name, data, opts: options })),
+          payloads.map((data) => ({ name, data, opts: options }))
         );
       };
     },
