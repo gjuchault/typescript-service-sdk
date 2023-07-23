@@ -1,6 +1,5 @@
 import path from "node:path";
 import url from "node:url";
-import fs from "node:fs/promises";
 import { globbyStream } from "globby";
 import { build as esbuild } from "esbuild";
 
@@ -21,8 +20,6 @@ async function buildFile(filePath: string) {
 }
 
 async function build() {
-  await fs.rm(buildPath, { recursive: true });
-
   const filesStream = globbyStream("**/*.ts", {
     cwd: srcPath,
     onlyFiles: true,
