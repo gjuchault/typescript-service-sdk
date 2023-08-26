@@ -73,7 +73,7 @@
     "source-map-support": "^0.5.21",
     "typescript": "^5.1.6",
     "tsx": "^3.12.7",
-    "vitest": "^0.34.2"
+    "vitest": "^0.34.3"
   },
   "peerDependencies": {
     "@autotelic/fastify-opentelemetry": "^0.17.1",
