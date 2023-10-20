@@ -1,6 +1,5 @@
 import { randomUUID } from "node:crypto";
 
-import openTelemetryPlugin from "@autotelic/fastify-opentelemetry";
 import circuitBreaker from "@fastify/circuit-breaker";
 import cookie from "@fastify/cookie";
 import cors from "@fastify/cors";
@@ -28,6 +27,7 @@ import { createOpenTelemetryPluginOptions } from "../../infrastructure/telemetry
 import { metricsPlugin } from "../../infrastructure/telemetry/metrics/fastify.js";
 import type { Cache } from "../cache/index.js";
 import type { Telemetry } from "../telemetry/index.js";
+import { openTelemetryPlugin } from "./fastify-opentelemetry.js";
 
 export type HttpServer = FastifyInstance;
 export type HttpRequest = FastifyRequest;
@@ -35,15 +35,11 @@ export type HttpReply = FastifyReply;
 
 const requestTimeout = ms("120s");
 
-function genericReturnTypeWrapper<TRouter extends AppRouter>() {
-  return initServer().router<TRouter>({} as never, {} as never);
-}
+type InitializedRouter = Parameters<ReturnType<typeof initServer>["plugin"]>[0];
 
-export type InitializedRouter<TRouter extends AppRouter> = ReturnType<
-  typeof genericReturnTypeWrapper<TRouter>
->;
-
-export async function createHttpServer<TRouter extends AppRouter>({
+export async function createHttpServer<
+  TAppRouter extends { contract: AppRouter; routes: unknown },
+>({
   config,
   cache,
   telemetry,
@@ -52,7 +48,7 @@ export async function createHttpServer<TRouter extends AppRouter>({
   config: { name: string; version: string; logLevel: LogLevel; secret: string };
   cache: Cache;
   telemetry: Telemetry;
-  appRouter: InitializedRouter<TRouter>;
+  appRouter: TAppRouter;
 }) {
   const logger = createLogger("http", { config });
 
@@ -67,7 +63,7 @@ export async function createHttpServer<TRouter extends AppRouter>({
   });
 
   await httpServer.register(
-    openTelemetryPlugin.default,
+    openTelemetryPlugin,
     createOpenTelemetryPluginOptions({ config }),
   );
   await httpServer.register(metricsPlugin, telemetry);
@@ -84,10 +80,13 @@ export async function createHttpServer<TRouter extends AppRouter>({
   });
   await httpServer.register(underPressure);
 
-  await httpServer.register(initServer().plugin(appRouter), {
-    logLevel: config.logLevel,
-    prefix: "/api",
-  });
+  await httpServer.register(
+    initServer().plugin(appRouter as InitializedRouter),
+    {
+      logLevel: config.logLevel,
+      prefix: "/api",
+    },
+  );
 
   httpServer.setNotFoundHandler(
     {

@@ -1,7 +1,7 @@
-import type { OpenTelemetryPluginOptions } from "@autotelic/fastify-opentelemetry";
 import type { FastifyRequest } from "fastify";
 
 import { semanticConventions } from "../../../opentelemetry/index.js";
+import type { OpenTelemetryPluginOptions } from "../../http/fastify-opentelemetry.js";
 
 const { NetTransportValues, SemanticAttributes } = semanticConventions;
 
@@ -12,9 +12,11 @@ export const ATTRIBUTE_ERROR_STACK = "error.stack";
 export function createOpenTelemetryPluginOptions({
   config,
 }: {
-  config: { name: string };
+  config: { name: string; version: string };
 }): OpenTelemetryPluginOptions {
   return {
+    moduleName: config.name,
+    moduleVersion: config.version,
     exposeApi: true,
     wrapRoutes: true,
     formatSpanName(request) {
@@ -26,7 +28,7 @@ export function createOpenTelemetryPluginOptions({
       return `${request.method} ${pathname}`;
     },
     formatSpanAttributes: {
-      request(request) {
+      request(request): Record<string, string | number | undefined> {
         const requestUrl = getAbsoluteUrl(request);
         const headers = request.headers;
         const userAgent = headers["user-agent"];
