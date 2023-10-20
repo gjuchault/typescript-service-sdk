@@ -20,11 +20,7 @@ export function createOpenTelemetryPluginOptions({
     exposeApi: true,
     wrapRoutes: true,
     formatSpanName(request) {
-      const requestUrl = getAbsoluteUrl(request);
-      // FIXME: is request.pathname optional?
-      const target = (requestUrl.pathname as string | undefined) ?? "/";
-      // FIXME: is request.routerPath optional?
-      const pathname = (request.routerPath as string | undefined) ?? target;
+      const pathname = request.routeOptions.url;
       return `${request.method} ${pathname}`;
     },
     formatSpanAttributes: {
@@ -34,11 +30,9 @@ export function createOpenTelemetryPluginOptions({
         const userAgent = headers["user-agent"];
         const ips = headers["x-forwarded-for"];
         const httpVersion = request.raw.httpVersion;
+        const target = requestUrl.pathname ?? "/";
 
-        // FIXME: is request.pathname optional?
-        const target = (requestUrl.pathname as string | undefined) ?? "/";
-        // FIXME: is request.routerPath optional?
-        const pathname = (request.routerPath as string | undefined) ?? target;
+        const pathname = request.routeOptions.url;
         const clientIp =
           typeof ips === "string" ? ips.split(",")[0] : undefined;
         const netTransport =

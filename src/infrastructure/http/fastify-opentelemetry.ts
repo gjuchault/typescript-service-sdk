@@ -134,7 +134,9 @@ async function openTelemetryPluginImplementation(
   const contextMap = new WeakMap<FastifyRequest, Context>();
   const tracer = trace.getTracer(moduleName, moduleVersion);
 
-  function onRequest(request: FastifyRequest) {
+  // still better to have async function than callback
+  // eslint-disable-next-line @typescript-eslint/require-await
+  async function onRequest(request: FastifyRequest) {
     if (shouldIgnoreRoute(request.url, request.method)) return;
 
     let activeContext = context.active();
@@ -149,7 +151,9 @@ async function openTelemetryPluginImplementation(
     contextMap.set(request, trace.setSpan(activeContext, span));
   }
 
-  function onResponse(request: FastifyRequest, reply: FastifyReply) {
+  // still better to have async function than callback
+  // eslint-disable-next-line @typescript-eslint/require-await
+  async function onResponse(request: FastifyRequest, reply: FastifyReply) {
     if (shouldIgnoreRoute(request.url, request.method)) return;
 
     const activeContext = getContext(request);
@@ -169,7 +173,13 @@ async function openTelemetryPluginImplementation(
     contextMap.delete(request);
   }
 
-  function onError(request: FastifyRequest, reply: FastifyReply, error: Error) {
+  // still better to have async function than callback
+  // eslint-disable-next-line @typescript-eslint/require-await
+  async function onError(
+    request: FastifyRequest,
+    reply: FastifyReply,
+    error: Error,
+  ) {
     if (shouldIgnoreRoute(request.url, request.method)) return;
 
     const activeContext = getContext(request);
@@ -194,7 +204,9 @@ async function openTelemetryPluginImplementation(
   }
 
   if (wrapRoutes) {
-    fastify.addHook("onRoute", function (routeOpts) {
+    // still better to have async function than callback
+    // eslint-disable-next-line @typescript-eslint/require-await
+    fastify.addHook("onRoute", async function (routeOpts) {
       const { path, handler, method } = routeOpts;
       if (!Array.isArray(method) && !shouldIgnoreRoute(path, method)) {
         if (wrapRoutes === true) {

@@ -103,7 +103,7 @@ export async function createHttpServer<
       requestId: getRequestId(request),
       method: request.method,
       url: request.url,
-      route: request.routerPath,
+      route: request.routeOptions.url,
       userAgent: request.headers["user-agent"],
     });
 
@@ -117,7 +117,7 @@ export async function createHttpServer<
         requestId: getRequestId(request),
         method: request.method,
         url: request.url,
-        route: request.routerPath,
+        route: request.routeOptions.url,
         userAgent: request.headers["user-agent"],
         responseTime: Math.ceil(reply.getResponseTime()),
         httpStatusCode: reply.statusCode,
@@ -138,7 +138,7 @@ export async function createHttpServer<
       },
       method: request.method,
       url: request.url,
-      route: request.routerPath,
+      route: request.routeOptions.url,
       userAgent: request.headers["user-agent"],
       responseTime: Math.ceil(reply.getResponseTime()),
       httpStatusCode: reply.statusCode,
