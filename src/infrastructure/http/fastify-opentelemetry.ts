@@ -46,8 +46,11 @@ export interface OpenTelemetryPluginOptions {
 }
 
 function defaultFormatSpanName(request: FastifyRequest): string {
-  const { method, routerPath } = request;
-  return routerPath ? `${method} ${routerPath}` : method;
+  const {
+    method,
+    routeOptions: { url },
+  } = request;
+  return `${method} ${url}`;
 }
 
 const defaultFormatSpanAttributes = {
@@ -71,7 +74,9 @@ const defaultFormatSpanAttributes = {
   },
 };
 
-function openTelemetryPluginImplementation(
+// still better to have async function than callback
+// eslint-disable-next-line @typescript-eslint/require-await
+async function openTelemetryPluginImplementation(
   fastify: FastifyInstance,
   {
     moduleName,
@@ -82,7 +87,7 @@ function openTelemetryPluginImplementation(
     ignoreRoutes = [],
     formatSpanAttributes: inputFormatSpanAttributes,
   }: OpenTelemetryPluginOptions,
-): undefined {
+): Promise<undefined> {
   const shouldIgnoreRoute =
     typeof ignoreRoutes === "function"
       ? ignoreRoutes
