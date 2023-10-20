@@ -208,6 +208,7 @@ async function openTelemetryPluginImplementation(
     // eslint-disable-next-line @typescript-eslint/require-await
     fastify.addHook("onRoute", async function (routeOpts) {
       const { path, handler, method } = routeOpts;
+
       if (!Array.isArray(method) && !shouldIgnoreRoute(path, method)) {
         if (wrapRoutes === true) {
           routeOpts.handler = wrapRoute(handler);

@@ -33,7 +33,10 @@ function innerMetricsPlugin(
   const durationMap = new WeakMap<FastifyRequest, number>();
 
   httpServer.addHook("onRequest", (request, _reply, done) => {
-    if (request.method === "head" || ignoredPaths.has(request.routerPath)) {
+    if (
+      request.method === "head" ||
+      ignoredPaths.has(request.routeOptions.url)
+    ) {
       return done();
     }
 
@@ -52,7 +55,7 @@ function innerMetricsPlugin(
       (Date.now() - requestStarted) / 1000,
       {
         httpMethod: request.method,
-        httpRoute: request.routerPath,
+        httpRoute: request.routeOptions.url,
       },
     );
 
