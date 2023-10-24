@@ -12,6 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
+        with:
+          node-version: 21
       - uses: bahmutov/npm-install@v1
       - name: ⬣ ESLint
         run: npm run lint:check
@@ -22,6 +24,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
+        with:
+          node-version: 21
       - name: 🛡️ Audit
         run: npm audit --audit-level=high
 
@@ -31,6 +35,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
+        with:
+          node-version: 21
       - uses: bahmutov/npm-install@v1
       - name: 🔬 Format
         run: npm run format:check
@@ -41,6 +47,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
+        with:
+          node-version: 21
       - uses: bahmutov/npm-install@v1
       - name: 🈸 Spellcheck
         run: npm run spell:check
@@ -51,6 +59,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
+        with:
+          node-version: 21
       - uses: bahmutov/npm-install@v1
       - name: ʦ Typecheck
         run: npm run type:check
@@ -61,6 +71,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
+        with:
+          node-version: 21
       - uses: bahmutov/npm-install@v1
       - name: ⚡ Tests
         run: npm run test:coverage
@@ -72,6 +84,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
+        with:
+          node-version: 21
       - uses: bahmutov/npm-install@v1
       - name: 🔨 Build
         run: npm run build
