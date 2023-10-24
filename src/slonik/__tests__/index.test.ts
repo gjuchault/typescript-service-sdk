@@ -1,5 +1,7 @@
+import * as assert from "node:assert/strict";
+
 import { sql } from "slonik";
-import { beforeAll, describe, expect, it, vi } from "vitest";
+import { beforeAll, describe, it, vi } from "vitest";
 import { z } from "zod";
 
 import {
@@ -24,9 +26,9 @@ describe("createFailingQueryMockDatabase()", () => {
       });
 
       it("throws", () => {
-        expect(hasQueryFailed).toBe(true);
-        expect(query).toBeCalledTimes(1);
-        expect(query.mock.calls[0]?.[0]).toEqual("select id from foobar");
+        assert.equal(hasQueryFailed, true);
+        assert.equal(query.mock.calls.length, 1);
+        assert.equal(query.mock.calls[0]?.[0], "select id from foobar");
       });
     });
   });
@@ -41,14 +43,14 @@ describe("createMockDatabase()", () => {
 
       beforeAll(async () => {
         result = await database.any(
-          sql.type(z.object({ id: z.number() }))`select id from foobar`,
+          sql.type(z.object({ id: z.number() }))`select id from foobar`
         );
       });
 
       it("returns the mocked result", () => {
-        expect(query).toBeCalledTimes(1);
-        expect(query.mock.calls[0]?.[0]).toEqual("select id from foobar");
-        expect(result).toEqual([{ id: 1 }, { id: 2 }]);
+        assert.equal(query.mock.calls.length, 1);
+        assert.equal(query.mock.calls[0]?.[0], "select id from foobar");
+        assert.deepEqual(result, [{ id: 1 }, { id: 2 }]);
       });
     });
   });
@@ -64,17 +66,17 @@ describe("prepareBulkInsert()", () => {
           ["index", "int4"],
         ],
         [{ id: "some-uuid", my_name: "John Doe", index: 1 }],
-        (user) => ({ id: user.id, name: user.my_name, index: user.index }),
+        (user) => ({ id: user.id, name: user.my_name, index: user.index })
       );
 
       it("returns the columns and data grid", () => {
-        expect(prepareBulkInsertResult.isOk()).toBe(true);
+        assert.equal(prepareBulkInsertResult.isOk(), true);
 
         if (!prepareBulkInsertResult.isOk()) {
-          expect.fail();
+          assert.fail();
         }
 
-        expect(prepareBulkInsertResult.value.columns).toEqual({
+        assert.deepEqual(prepareBulkInsertResult.value.columns, {
           type: "SLONIK_TOKEN_LIST",
           glue: sql.fragment`, `,
           members: [
@@ -84,7 +86,7 @@ describe("prepareBulkInsert()", () => {
           ],
         });
 
-        expect(prepareBulkInsertResult.value.rows).toEqual({
+        assert.deepEqual(prepareBulkInsertResult.value.rows, {
           columnTypes: ["uuid", "text", "int4"],
           tuples: [["some-uuid", "John Doe", 1]],
           type: "SLONIK_TOKEN_UNNEST",

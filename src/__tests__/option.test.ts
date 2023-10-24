@@ -1,4 +1,6 @@
-import { describe, expect, it } from "vitest";
+import * as assert from "node:assert/strict";
+
+import { describe, it } from "vitest";
 
 import type { Option } from "../option.js";
 import { none, some } from "../option.js";
@@ -17,7 +19,7 @@ describe("isSome()", () => {
 
     describe("when called", () => {
       it("returns true", () => {
-        expect(option.isSome()).toBe(true);
+        assert.equal(option.isSome(), true);
       });
     });
   });
@@ -27,7 +29,7 @@ describe("isSome()", () => {
 
     describe("when called", () => {
       it("returns false", () => {
-        expect(option.isSome()).toBe(false);
+        assert.equal(option.isSome(), false);
       });
     });
   });
@@ -39,7 +41,7 @@ describe("isNone()", () => {
 
     describe("when called", () => {
       it("returns false", () => {
-        expect(option.isNone()).toBe(false);
+        assert.equal(option.isNone(), false);
       });
     });
   });
@@ -49,7 +51,7 @@ describe("isNone()", () => {
 
     describe("when called", () => {
       it("returns true", () => {
-        expect(option.isNone()).toBe(true);
+        assert.equal(option.isNone(), true);
       });
     });
   });
@@ -65,10 +67,10 @@ describe("map()", () => {
     describe("when called", () => {
       it("returns a some containing the mapped value", () => {
         const result = option.map(mapper);
-        expect(result.isSome()).toBe(true);
+        assert.equal(result.isSome(), true);
 
         if (result.isSome()) {
-          expect(result.value).toBe("FOOBAR");
+          assert.equal(result.value, "FOOBAR");
         }
       });
     });
@@ -83,7 +85,7 @@ describe("map()", () => {
     describe("when called", () => {
       it("returns a none", () => {
         const result = option.map(mapper);
-        expect(result.isSome()).toBe(false);
+        assert.equal(result.isSome(), false);
       });
     });
   });
@@ -95,7 +97,7 @@ describe("_unsafeUnwrap()", () => {
 
     describe("when called", () => {
       it("returns the value", () => {
-        expect(option._unsafeUnwrap()).toBe("foobar");
+        assert.equal(option._unsafeUnwrap(), "foobar");
       });
     });
   });
@@ -105,7 +107,7 @@ describe("_unsafeUnwrap()", () => {
 
     describe("when called", () => {
       it("throws", () => {
-        expect(() => option._unsafeUnwrap()).toThrow(TypeError);
+        assert.throws(() => option._unsafeUnwrap(), TypeError);
       });
     });
   });
@@ -118,7 +120,7 @@ describe("unwrapOr()", () => {
 
     describe("when called", () => {
       it("returns the value", () => {
-        expect(option.unwrapOr(fallback)).toBe("foobar");
+        assert.equal(option.unwrapOr(fallback), "foobar");
       });
     });
   });
@@ -129,7 +131,7 @@ describe("unwrapOr()", () => {
 
     describe("when called", () => {
       it("throws", () => {
-        expect(option.unwrapOr(fallback)).toBe("fallback");
+        assert.equal(option.unwrapOr(fallback), "fallback");
       });
     });
   });
@@ -145,10 +147,10 @@ describe("andThen()", () => {
     describe("when called", () => {
       it("returns a some containing the mapped value", () => {
         const result = option.andThen(mapper);
-        expect(result.isSome()).toBe(true);
+        assert.equal(result.isSome(), true);
 
         if (result.isSome()) {
-          expect(result.value).toBe("FOOBAR");
+          assert.equal(result.value, "FOOBAR");
         }
       });
     });
@@ -163,7 +165,7 @@ describe("andThen()", () => {
     describe("when called", () => {
       it("returns a some containing the mapped value", () => {
         const result = option.andThen(mapper);
-        expect(result.isNone()).toBe(true);
+        assert.equal(result.isNone(), true);
       });
     });
   });
@@ -177,7 +179,7 @@ describe("andThen()", () => {
     describe("when called", () => {
       it("returns a none", () => {
         const result = option.andThen(mapper);
-        expect(result.isSome()).toBe(false);
+        assert.equal(result.isSome(), false);
       });
     });
   });
@@ -191,7 +193,7 @@ describe("andThen()", () => {
     describe("when called", () => {
       it("returns a none", () => {
         const result = option.andThen(mapper);
-        expect(result.isSome()).toBe(false);
+        assert.equal(result.isSome(), false);
       });
     });
   });
@@ -205,10 +207,10 @@ describe("toResult()", () => {
     describe("when called", () => {
       it("returns an Ok", () => {
         const result = option.toResult(fallback);
-        expect(result.isOk()).toBe(true);
+        assert.equal(result.isOk(), true);
 
         if (result.isOk()) {
-          expect(result.value).toEqual("foobar");
+          assert.equal(result.value, "foobar");
         }
       });
     });
@@ -221,10 +223,10 @@ describe("toResult()", () => {
     describe("when called", () => {
       it("returns false", () => {
         const result = option.toResult(fallback);
-        expect(result.isErr()).toBe(true);
+        assert.equal(result.isErr(), true);
 
         if (result.isErr()) {
-          expect(result.error).toEqual("fallback");
+          assert.equal(result.error, "fallback");
         }
       });
     });

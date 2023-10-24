@@ -1,4 +1,6 @@
-import { describe, expect, it } from "vitest";
+import * as assert from "node:assert/strict";
+
+import { describe, it } from "vitest";
 import { z, ZodError } from "zod";
 
 import {
@@ -14,13 +16,13 @@ describe("parse()", () => {
       const result = parse(z.string(), "foobar");
 
       it("returns a success", () => {
-        expect(result.isOk()).toBe(true);
+        assert.equal(result.isOk(), true);
 
         if (!result.isOk()) {
-          expect.fail();
+          assert.fail();
         }
 
-        expect(result.value).toBe("foobar");
+        assert.equal(result.value, "foobar");
       });
     });
   });
@@ -30,13 +32,13 @@ describe("parse()", () => {
       const result = parse(z.string(), 123);
 
       it("returns an error", () => {
-        expect(result.isErr()).toBe(true);
+        assert.equal(result.isErr(), true);
 
         if (!result.isErr()) {
-          expect.fail();
+          assert.fail();
         }
 
-        expect(result.error).toBeInstanceOf(ZodError);
+        assert.equal(result.error instanceof ZodError, true);
       });
     });
   });
@@ -50,16 +52,16 @@ describe("parseStringMinMax()", () => {
         const result = parseStringMinMax(input, { min: -100, max: 100 });
 
         it("returns an option containing a value", () => {
-          expect(result.isSome());
+          assert.equal(result.isSome(), true);
 
           if (!result.isSome()) {
-            expect.fail();
+            assert.fail();
           }
 
-          expect(result.value).toBeTypeOf("number");
+          assert.equal(typeof result.value, "number");
         });
       });
-    },
+    }
   );
 
   describe.each(["foobar", "-200", "-100.01", "100.01", "200"])(
@@ -69,14 +71,14 @@ describe("parseStringMinMax()", () => {
         const result = parseStringMinMax(input, { min: -100, max: 100 });
 
         it("returns an option containing a value", () => {
-          expect(result.isNone());
+          assert.equal(result.isNone(), true);
 
           if (!result.isNone()) {
-            expect.fail();
+            assert.fail();
           }
         });
       });
-    },
+    }
   );
 });
 
@@ -86,13 +88,13 @@ describe("parseStringMinMaxInteger()", () => {
       const result = parseStringMinMaxInteger(input, { min: -100, max: 100 });
 
       it("returns an option containing a value", () => {
-        expect(result.isSome());
+        assert.equal(result.isSome(), true);
 
         if (!result.isSome()) {
-          expect.fail();
+          assert.fail();
         }
 
-        expect(result.value).toBeTypeOf("number");
+        assert.equal(typeof result.value, "number");
       });
     });
   });
@@ -104,14 +106,14 @@ describe("parseStringMinMaxInteger()", () => {
         const result = parseStringMinMaxInteger(input, { min: -100, max: 100 });
 
         it("returns an option containing a value", () => {
-          expect(result.isNone());
+          assert.equal(result.isNone(), true);
 
           if (!result.isNone()) {
-            expect.fail();
+            assert.fail();
           }
         });
       });
-    },
+    }
   );
 });
 
@@ -134,13 +136,13 @@ describe("parseStringMs()", () => {
       const result = parseStringMs(input);
 
       it("returns an option containing a value", () => {
-        expect(result.isSome());
+        assert.equal(result.isSome(), true);
 
         if (!result.isSome()) {
-          expect.fail();
+          assert.fail();
         }
 
-        expect(result.value).toBeTypeOf("number");
+        assert.equal(typeof result.value, "number");
       });
     });
   });
@@ -150,10 +152,10 @@ describe("parseStringMs()", () => {
       const result = parseStringMs(input);
 
       it("returns an option containing a value", () => {
-        expect(result.isNone());
+        assert.equal(result.isNone(), true);
 
         if (!result.isNone()) {
-          expect.fail();
+          assert.fail();
         }
       });
     });
