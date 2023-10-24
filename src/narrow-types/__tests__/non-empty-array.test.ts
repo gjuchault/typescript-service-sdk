@@ -20,7 +20,7 @@ describe("concat()", () => {
         makeNonEmptyArray(["a", "b", "c"])._unsafeUnwrap(),
         ["d", "e"],
         [],
-        ["f"]
+        ["f"],
       );
 
       it("returns the concatenation of the arrays as a non-empty array", () => {
@@ -37,7 +37,7 @@ describe("filter()", () => {
     describe("when called", () => {
       const result = filter(
         makeNonEmptyArray([0, 1, 2, 3, 4, 5, 6])._unsafeUnwrap(),
-        (value) => value % 2 === 0
+        (value) => value % 2 === 0,
       );
 
       it("returns a subset array", () => {
@@ -57,7 +57,7 @@ describe("flat()", () => {
   describe("given a non-empty array, a predicate and no depth parameter", () => {
     describe("when called", () => {
       const result = flat(
-        makeNonEmptyArray([0, [[1]], 2, [3], 4, [5, 6]])._unsafeUnwrap()
+        makeNonEmptyArray([0, [[1]], 2, [3], 4, [5, 6]])._unsafeUnwrap(),
       );
 
       it("returns a subset array", () => {
@@ -70,7 +70,7 @@ describe("flat()", () => {
     describe("when called", () => {
       const result = flat(
         makeNonEmptyArray([0, [[1]], 2, [3], 4, [5, 6]])._unsafeUnwrap(),
-        10
+        10,
       );
 
       it("returns a subset array", () => {
@@ -85,7 +85,7 @@ describe("flatMap()", () => {
     describe("when called", () => {
       const result = flatMap(
         makeNonEmptyArray([[0, 1, 2], [5], [0]])._unsafeUnwrap(),
-        (value) => value.reduce((a, b) => a + b, 0)
+        (value) => value.reduce((a, b) => a + b, 0),
       );
 
       it("returns a subset array", () => {
@@ -144,7 +144,7 @@ describe("map()", () => {
     describe("when called", () => {
       const result = map(
         makeNonEmptyArray([1, 2, 3])._unsafeUnwrap(),
-        (value) => value * 2
+        (value) => value * 2,
       );
 
       it("returns the modified array", () => {

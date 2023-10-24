@@ -121,11 +121,11 @@ export function prepareBulkInsert<
 >(
   columnDefinitions: ColumnDefinition<TDatabaseRecord>[],
   records: TRecord[],
-  iteratee: (record: TRecord, i: number) => TDatabaseRecord
+  iteratee: (record: TRecord, i: number) => TDatabaseRecord,
 ): PrepareBulkInsertResult {
   const headersParseResult = parse(
     z.array(z.string()),
-    columnDefinitions.map(([columnName]) => columnName)
+    columnDefinitions.map(([columnName]) => columnName),
   );
 
   if (headersParseResult.isErr()) {
@@ -133,7 +133,7 @@ export function prepareBulkInsert<
   }
 
   const columnTypes = columnDefinitions.map(
-    (columnDefinition) => columnDefinition[1]
+    (columnDefinition) => columnDefinition[1],
   );
 
   const rows: PrimitiveValueExpression[][] = [];
@@ -154,7 +154,7 @@ export function prepareBulkInsert<
             .union([z.date(), z.number(), z.string()])
             .refine((value) => !Number.isNaN(new Date(value).getTime()))
             .transform((value) => new Date(value)),
-          databaseRecord[columnName]
+          databaseRecord[columnName],
         );
 
         if (parseDateResult.isErr()) {
@@ -178,7 +178,7 @@ export function prepareBulkInsert<
 
   const columns = sql.join(
     headersParseResult.value.map((header) => sql.identifier([header])),
-    sql.fragment`, `
+    sql.fragment`, `,
   );
 
   return ok({

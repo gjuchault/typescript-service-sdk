@@ -46,7 +46,7 @@ describe("createMockDatabase()", () => {
 
       before(async () => {
         result = await database.any(
-          sql.type(z.object({ id: z.number() }))`select id from foobar`
+          sql.type(z.object({ id: z.number() }))`select id from foobar`,
         );
       });
 
@@ -54,7 +54,7 @@ describe("createMockDatabase()", () => {
         assert.equal(query.mock.calls.length, 1);
         assert.deepEqual(
           query.mock.calls[0]?.arguments,
-          "select id from foobar"
+          "select id from foobar",
         );
         assert.deepEqual(result, [{ id: 1 }, { id: 2 }]);
       });
@@ -72,7 +72,7 @@ describe("prepareBulkInsert()", () => {
           ["index", "int4"],
         ],
         [{ id: "some-uuid", my_name: "John Doe", index: 1 }],
-        (user) => ({ id: user.id, name: user.my_name, index: user.index })
+        (user) => ({ id: user.id, name: user.my_name, index: user.index }),
       );
 
       it("returns the columns and data grid", () => {
