@@ -1,3 +1,5 @@
+import { mock } from "node:test";
+
 import type { Result } from "neverthrow";
 import { err, ok } from "neverthrow";
 import type {
@@ -14,30 +16,22 @@ import {
   SlonikError,
   sql,
 } from "slonik";
-import type { Mock, vi } from "vitest";
 import type { ZodError } from "zod";
 import { z } from "zod";
 
 import { parse } from "../zod/index.js";
 
-type VitestUtils = typeof vi;
+type MockQuery = ReturnType<
+  typeof mock.fn<() => Promise<QueryResult<QueryResultRow>>>
+>;
 
-export function createMockDatabase(
-  vi: VitestUtils,
-  results: readonly QueryResultRow[],
-): {
+export function createMockDatabase(values: readonly QueryResultRow[]): {
+  query: MockQuery;
   database: DatabasePool;
-  query: Mock<
-    [string, readonly PrimitiveValueExpression[]],
-    Promise<QueryResult<QueryResultRow>>
-  >;
 } {
-  const query = vi
-    .fn<
-      [string, readonly PrimitiveValueExpression[]],
-      Promise<QueryResult<QueryResultRow>>
-    >()
-    .mockResolvedValue(createMockQueryResult(results));
+  const query = mock.fn(async (): Promise<QueryResult<QueryResultRow>> => {
+    return Promise.resolve(createMockQueryResult(values));
+  });
 
   const database = createMockPool({
     query,
@@ -49,15 +43,13 @@ export function createMockDatabase(
   };
 }
 
-export function createFailingQueryMockDatabase(vi: VitestUtils): {
+export function createFailingQueryMockDatabase(): {
+  query: MockQuery;
   database: DatabasePool;
-  query: Mock<[string], Promise<QueryResult<QueryResultRow>>>;
 } {
-  const query = vi
-    .fn<[string], Promise<QueryResult<QueryResultRow>>>()
-    .mockImplementation(() => {
-      throw new SlonikError("Mocked database error");
-    });
+  const query = mock.fn(async (): Promise<QueryResult<QueryResultRow>> => {
+    return Promise.reject(new SlonikError("Mocked database error"));
+  });
 
   const database = createMockPool({
     query,
@@ -129,11 +121,11 @@ export function prepareBulkInsert<
 >(
   columnDefinitions: ColumnDefinition<TDatabaseRecord>[],
   records: TRecord[],
-  iteratee: (record: TRecord, i: number) => TDatabaseRecord,
+  iteratee: (record: TRecord, i: number) => TDatabaseRecord
 ): PrepareBulkInsertResult {
   const headersParseResult = parse(
     z.array(z.string()),
-    columnDefinitions.map(([columnName]) => columnName),
+    columnDefinitions.map(([columnName]) => columnName)
   );
 
   if (headersParseResult.isErr()) {
@@ -141,7 +133,7 @@ export function prepareBulkInsert<
   }
 
   const columnTypes = columnDefinitions.map(
-    (columnDefinition) => columnDefinition[1],
+    (columnDefinition) => columnDefinition[1]
   );
 
   const rows: PrimitiveValueExpression[][] = [];
@@ -162,7 +154,7 @@ export function prepareBulkInsert<
             .union([z.date(), z.number(), z.string()])
             .refine((value) => !Number.isNaN(new Date(value).getTime()))
             .transform((value) => new Date(value)),
-          databaseRecord[columnName],
+          databaseRecord[columnName]
         );
 
         if (parseDateResult.isErr()) {
@@ -186,7 +178,7 @@ export function prepareBulkInsert<
 
   const columns = sql.join(
     headersParseResult.value.map((header) => sql.identifier([header])),
-    sql.fragment`, `,
+    sql.fragment`, `
   );
 
   return ok({

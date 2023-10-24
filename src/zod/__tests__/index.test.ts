@@ -1,6 +1,6 @@
 import * as assert from "node:assert/strict";
+import { describe, it } from "node:test";
 
-import { describe, it } from "vitest";
 import { z, ZodError } from "zod";
 
 import {
@@ -45,13 +45,14 @@ describe("parse()", () => {
 });
 
 describe("parseStringMinMax()", () => {
-  describe.each(["100", "50.2", "0", "-50.2", "-100"])(
-    "given a valid ms value",
-    (input) => {
-      describe("when called", () => {
-        const result = parseStringMinMax(input, { min: -100, max: 100 });
+  describe("given a valid ms value", () => {
+    const validMsValues = ["100", "50.2", "0", "-50.2", "-100"];
 
-        it("returns an option containing a value", () => {
+    describe("when called", () => {
+      it("returns an option containing a value", () => {
+        for (const input of validMsValues) {
+          const result = parseStringMinMax(input, { min: -100, max: 100 });
+
           assert.equal(result.isSome(), true);
 
           if (!result.isSome()) {
@@ -59,103 +60,118 @@ describe("parseStringMinMax()", () => {
           }
 
           assert.equal(typeof result.value, "number");
-        });
+        }
       });
-    }
-  );
+    });
+  });
 
-  describe.each(["foobar", "-200", "-100.01", "100.01", "200"])(
-    "given an invalid ms value",
-    (input) => {
-      describe("when called", () => {
-        const result = parseStringMinMax(input, { min: -100, max: 100 });
+  describe("given an invalid ms value", () => {
+    const invalidMsValues = ["foobar", "-200", "-100.01", "100.01", "200"];
 
-        it("returns an option containing a value", () => {
+    describe("when called", () => {
+      it("returns an option containing a value", () => {
+        for (const input of invalidMsValues) {
+          const result = parseStringMinMax(input, { min: -100, max: 100 });
           assert.equal(result.isNone(), true);
 
           if (!result.isNone()) {
             assert.fail();
           }
-        });
+        }
       });
-    }
-  );
+    });
+  });
 });
 
 describe("parseStringMinMaxInteger()", () => {
-  describe.each(["100", "0", "-100"])("given a valid ms value", (input) => {
+  describe("given a valid ms value", () => {
+    const validMsValues = ["100", "0", "-100"];
+
     describe("when called", () => {
-      const result = parseStringMinMaxInteger(input, { min: -100, max: 100 });
-
       it("returns an option containing a value", () => {
-        assert.equal(result.isSome(), true);
+        for (const input of validMsValues) {
+          const result = parseStringMinMaxInteger(input, {
+            min: -100,
+            max: 100,
+          });
+          assert.equal(result.isSome(), true);
 
-        if (!result.isSome()) {
-          assert.fail();
+          if (!result.isSome()) {
+            assert.fail();
+          }
+
+          assert.equal(typeof result.value, "number");
         }
-
-        assert.equal(typeof result.value, "number");
       });
     });
   });
 
-  describe.each(["foobar", "-200", "-100.01", "100.01", "200"])(
-    "given an invalid ms value",
-    (input) => {
-      describe("when called", () => {
-        const result = parseStringMinMaxInteger(input, { min: -100, max: 100 });
+  describe("given an invalid ms value", () => {
+    const invalidMsValues = ["foobar", "-200", "-100.01", "100.01", "200"];
 
-        it("returns an option containing a value", () => {
+    describe("when called", () => {
+      it("returns an option containing a value", () => {
+        for (const input of invalidMsValues) {
+          const result = parseStringMinMaxInteger(input, {
+            min: -100,
+            max: 100,
+          });
           assert.equal(result.isNone(), true);
 
           if (!result.isNone()) {
             assert.fail();
           }
-        });
+        }
       });
-    }
-  );
+    });
+  });
 });
 
 describe("parseStringMs()", () => {
-  describe.each([
-    "2 days",
-    "1d",
-    "10h",
-    "2.5 hrs",
-    "2h",
-    "1m",
-    "5s",
-    "1y",
-    "100",
-    "-3 days",
-    "-1h",
-    "-200",
-  ])("given a valid ms value", (input) => {
+  describe("given a valid ms value", () => {
+    const validMsValues = [
+      "2 days",
+      "1d",
+      "10h",
+      "2.5 hrs",
+      "2h",
+      "1m",
+      "5s",
+      "1y",
+      "100",
+      "-3 days",
+      "-1h",
+      "-200",
+    ];
+
     describe("when called", () => {
-      const result = parseStringMs(input);
-
       it("returns an option containing a value", () => {
-        assert.equal(result.isSome(), true);
+        for (const input of validMsValues) {
+          const result = parseStringMs(input);
+          assert.equal(result.isSome(), true);
 
-        if (!result.isSome()) {
-          assert.fail();
+          if (!result.isSome()) {
+            assert.fail();
+          }
+
+          assert.equal(typeof result.value, "number");
         }
-
-        assert.equal(typeof result.value, "number");
       });
     });
   });
 
-  describe.each(["foobar"])("given an invalid ms value", (input) => {
+  describe("given an invalid ms value", () => {
+    const invalidMsValues = ["foobar"];
+
     describe("when called", () => {
-      const result = parseStringMs(input);
-
       it("returns an option containing a value", () => {
-        assert.equal(result.isNone(), true);
+        for (const input of invalidMsValues) {
+          const result = parseStringMs(input);
+          assert.equal(result.isNone(), true);
 
-        if (!result.isNone()) {
-          assert.fail();
+          if (!result.isNone()) {
+            assert.fail();
+          }
         }
       });
     });

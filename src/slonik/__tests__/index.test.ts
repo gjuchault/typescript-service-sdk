@@ -1,7 +1,7 @@
 import * as assert from "node:assert/strict";
+import { before, describe, it } from "node:test";
 
 import { sql } from "slonik";
-import { beforeAll, describe, it, vi } from "vitest";
 import { z } from "zod";
 
 import {
@@ -12,12 +12,12 @@ import {
 
 describe("createFailingQueryMockDatabase()", () => {
   describe("given no arguments", () => {
-    const { database, query } = createFailingQueryMockDatabase(vi);
+    const { database, query } = createFailingQueryMockDatabase();
 
     describe("when called", () => {
       let hasQueryFailed = false;
 
-      beforeAll(async () => {
+      before(async () => {
         try {
           await database.any(sql.unsafe`select id from foobar`);
         } catch {
@@ -28,7 +28,10 @@ describe("createFailingQueryMockDatabase()", () => {
       it("throws", () => {
         assert.equal(hasQueryFailed, true);
         assert.equal(query.mock.calls.length, 1);
-        assert.equal(query.mock.calls[0]?.[0], "select id from foobar");
+
+        assert.deepEqual(query.mock.calls[0]?.arguments, [
+          "select id from foobar",
+        ]);
       });
     });
   });
@@ -36,12 +39,12 @@ describe("createFailingQueryMockDatabase()", () => {
 
 describe("createMockDatabase()", () => {
   describe("given a mock result", () => {
-    const { database, query } = createMockDatabase(vi, [{ id: 1 }, { id: 2 }]);
+    const { database, query } = createMockDatabase([{ id: 1 }, { id: 2 }]);
 
     describe("when called", () => {
       let result: readonly { id: number }[] = [];
 
-      beforeAll(async () => {
+      before(async () => {
         result = await database.any(
           sql.type(z.object({ id: z.number() }))`select id from foobar`
         );
@@ -49,7 +52,10 @@ describe("createMockDatabase()", () => {
 
       it("returns the mocked result", () => {
         assert.equal(query.mock.calls.length, 1);
-        assert.equal(query.mock.calls[0]?.[0], "select id from foobar");
+        assert.deepEqual(
+          query.mock.calls[0]?.arguments,
+          "select id from foobar"
+        );
         assert.deepEqual(result, [{ id: 1 }, { id: 2 }]);
       });
     });
