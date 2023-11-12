@@ -72,7 +72,7 @@
     "semantic-release": "^22.0.7",
     "source-map-support": "^0.5.21",
     "typescript": "^5.2.2",
-    "tsx": "^3.14.0"
+    "tsx": "^4.1.1"
   },
   "peerDependencies": {
     "@fastify/circuit-breaker": "^3.2.0",
