@@ -3,6 +3,7 @@ import { describe, it } from "node:test";
 
 import { z, ZodError } from "zod";
 
+import { isNone, isSome } from "../../option.js";
 import {
   parse,
   parseStringMinMax,
@@ -53,13 +54,13 @@ await describe("parseStringMinMax()", async () => {
         for (const input of validMsValues) {
           const result = parseStringMinMax(input, { min: -100, max: 100 });
 
-          assert.equal(result.isSome(), true);
+          assert.equal(isSome(result), true);
 
-          if (!result.isSome()) {
+          if (!isSome(result)) {
             assert.fail();
           }
 
-          assert.equal(typeof result.value, "number");
+          assert.equal(typeof result.data, "number");
         }
       });
     });
@@ -72,9 +73,9 @@ await describe("parseStringMinMax()", async () => {
       await it("returns an option containing a value", () => {
         for (const input of invalidMsValues) {
           const result = parseStringMinMax(input, { min: -100, max: 100 });
-          assert.equal(result.isNone(), true);
+          assert.equal(isNone(result), true);
 
-          if (!result.isNone()) {
+          if (!isNone(result)) {
             assert.fail();
           }
         }
@@ -94,13 +95,13 @@ await describe("parseStringMinMaxInteger()", async () => {
             min: -100,
             max: 100,
           });
-          assert.equal(result.isSome(), true);
+          assert.equal(isSome(result), true);
 
-          if (!result.isSome()) {
+          if (!isSome(result)) {
             assert.fail();
           }
 
-          assert.equal(typeof result.value, "number");
+          assert.equal(typeof result.data, "number");
         }
       });
     });
@@ -116,9 +117,9 @@ await describe("parseStringMinMaxInteger()", async () => {
             min: -100,
             max: 100,
           });
-          assert.equal(result.isNone(), true);
+          assert.equal(isNone(result), true);
 
-          if (!result.isNone()) {
+          if (!isNone(result)) {
             assert.fail();
           }
         }
@@ -148,13 +149,13 @@ await describe("parseStringMs()", async () => {
       await it("returns an option containing a value", () => {
         for (const input of validMsValues) {
           const result = parseStringMs(input);
-          assert.equal(result.isSome(), true);
+          assert.equal(isSome(result), true);
 
-          if (!result.isSome()) {
+          if (!isSome(result)) {
             assert.fail();
           }
 
-          assert.equal(typeof result.value, "number");
+          assert.equal(typeof result.data, "number");
         }
       });
     });
@@ -167,9 +168,9 @@ await describe("parseStringMs()", async () => {
       await it("returns an option containing a value", () => {
         for (const input of invalidMsValues) {
           const result = parseStringMs(input);
-          assert.equal(result.isNone(), true);
+          assert.equal(isNone(result), true);
 
-          if (!result.isNone()) {
+          if (!isNone(result)) {
             assert.fail();
           }
         }

@@ -249,7 +249,7 @@ await describe("toString()", async () => {
 
     await describe("when called", () => {
       it("returns a string representation of the value", () => {
-        assert.equal(toString(option), "Some(foobar)");
+        assert.equal(toString(option), `Some("foobar")`);
       });
     });
   });

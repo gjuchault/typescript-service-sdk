@@ -5,7 +5,7 @@ import type { ZodError, ZodType, ZodTypeDef } from "zod";
 import { z } from "zod";
 
 import type { Option } from "../option.js";
-import { none, some } from "../option.js";
+import { isSome, none, some, unsafeUnwrap } from "../option.js";
 
 /**
  * validates an input against a zod schema and return a result from it
@@ -33,24 +33,26 @@ export function stringifiedNumber({
   return z
     .string()
     .refine((valueAsString) =>
-      (integer
-        ? parseStringMinMaxInteger(valueAsString, { min, max })
-        : parseStringMinMax(valueAsString, { min, max })
-      ).isSome(),
+      isSome(
+        integer
+          ? parseStringMinMaxInteger(valueAsString, { min, max })
+          : parseStringMinMax(valueAsString, { min, max }),
+      ),
     )
     .transform((valueAsString) =>
-      (integer
-        ? parseStringMinMaxInteger(valueAsString, { min, max })
-        : parseStringMinMax(valueAsString, { min, max })
-      )._unsafeUnwrap(),
+      unsafeUnwrap(
+        integer
+          ? parseStringMinMaxInteger(valueAsString, { min, max })
+          : parseStringMinMax(valueAsString, { min, max }),
+      ),
     );
 }
 
 export function stringifiedMs() {
   return z
     .string()
-    .refine((valueAsString) => parseStringMs(valueAsString).isSome())
-    .transform((valueAsString) => parseStringMs(valueAsString)._unsafeUnwrap());
+    .refine((valueAsString) => isSome(parseStringMs(valueAsString)))
+    .transform((valueAsString) => unsafeUnwrap(parseStringMs(valueAsString)));
 }
 
 /**
