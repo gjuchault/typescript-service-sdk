@@ -1,8 +1,8 @@
-export * from "./cache/index.js";
-export * from "./database/index.js";
-export * from "./database/migration.js";
-export * from "./http/index.js";
-export * from "./logger/index.js";
-export * from "./shutdown/index.js";
-export * from "./task-scheduling/index.js";
-export * from "./telemetry/index.js";
+export * as cache from "./cache/index.js";
+export * as database from "./database/index.js";
+export * as databaseMigration from "./database/migration.js";
+export * as http from "./http/index.js";
+export * as logger from "./logger/index.js";
+export * as shutdown from "./shutdown/index.js";
+export * as taskScheduling from "./task-scheduling/index.js";
+export * as telemetry from "./telemetry/index.js";
