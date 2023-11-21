@@ -184,6 +184,6 @@ export type RouterImplementation<T extends AppRouter> = {
   [TKey in keyof T]: T[TKey] extends AppRouter
     ? RouterImplementation<T[TKey]>
     : T[TKey] extends AppRoute
-    ? AppRouteImplementation<T[TKey]>
-    : never;
+      ? AppRouteImplementation<T[TKey]>
+      : never;
 };
