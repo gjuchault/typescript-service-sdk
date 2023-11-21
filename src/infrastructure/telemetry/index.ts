@@ -32,7 +32,7 @@ const {
   SpanStatusCode,
 } = api;
 
-export interface Telemetry {
+export type Telemetry = {
   metrics: Meter;
   metricReader: PrometheusExporter;
   tracer: Tracer;
@@ -42,7 +42,7 @@ export interface Telemetry {
     callback: StartSpanCallback<TResolved>,
   ): Promise<TResolved>;
   shutdown(): Promise<void>;
-}
+};
 
 type StartSpanCallback<TResolved> = (
   span: Span,

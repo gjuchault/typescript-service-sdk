@@ -15,7 +15,7 @@ import type {
 } from "fastify";
 import fp from "fastify-plugin";
 
-export interface RequestDecorator {
+export type RequestDecorator = {
   activeSpan: Span | undefined;
   context: Context;
   tracer: Tracer;
@@ -27,9 +27,9 @@ export interface RequestDecorator {
     carrier: TCarrier,
     getter?: typeof defaultTextMapGetter,
   ): Context;
-}
+};
 
-export interface OpenTelemetryPluginOptions {
+export type OpenTelemetryPluginOptions = {
   moduleName: string;
   moduleVersion: string;
   wrapRoutes?: boolean | string[];
@@ -43,7 +43,7 @@ export interface OpenTelemetryPluginOptions {
   };
   formatSpanName?: (request: FastifyRequest) => string;
   ignoreRoutes?: string[] | ((path: string, method: string) => boolean);
-}
+};
 
 function defaultFormatSpanName(request: FastifyRequest): string {
   const {

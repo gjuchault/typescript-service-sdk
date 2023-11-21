@@ -12,13 +12,13 @@ import { getSpanOptions } from "../telemetry/instrumentations/bullmq.js";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
-interface Dependencies {
+type Dependencies = {
   config: { name: string; logLevel: LogLevel; redisUrl: string };
   cache: Cache;
   telemetry: Telemetry;
-}
+};
 
-export interface TaskScheduling {
+export type TaskScheduling = {
   createTask<TPayload>(
     taskName: string,
     processFunction: (job: Job<TPayload>) => Promise<void>,
@@ -27,7 +27,7 @@ export interface TaskScheduling {
   allWorkers: Worker[];
   allQueues: Queue[];
   allConnections: Cache[];
-}
+};
 
 export function createTaskScheduling({
   config,

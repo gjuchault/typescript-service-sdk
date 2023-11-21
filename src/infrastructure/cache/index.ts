@@ -7,10 +7,10 @@ import { createLogger } from "../logger/index.js";
 import type { Telemetry } from "../telemetry/index.js";
 import { getSpanOptions } from "../telemetry/instrumentations/ioredis.js";
 
-interface Dependencies {
+type Dependencies = {
   config: { redisUrl: string; logLevel: LogLevel };
   telemetry: Telemetry;
-}
+};
 
 export type Cache = Redis;
 

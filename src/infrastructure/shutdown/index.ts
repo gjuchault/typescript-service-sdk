@@ -12,7 +12,7 @@ import type { Telemetry } from "../telemetry/index.js";
 
 const { context, trace } = api;
 
-interface Dependencies {
+type Dependencies = {
   logger: Logger;
   httpServer: HttpServer;
   database: Database;
@@ -21,12 +21,12 @@ interface Dependencies {
   telemetry: Telemetry;
   config: { name: string; version: string };
   exit: (statusCode: number) => void;
-}
+};
 
-export interface ShutdownManager {
+export type ShutdownManager = {
   listenToProcessEvents: () => void;
   shutdown: (shouldExit?: boolean) => Promise<void>;
-}
+};
 
 export function createShutdownManager({
   logger,

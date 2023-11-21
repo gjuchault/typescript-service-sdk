@@ -10,7 +10,7 @@ import {
   getSpanOptions,
 } from "../telemetry/instrumentations/slonik.js";
 
-interface Dependencies {
+type Dependencies = {
   config: {
     logLevel: LogLevel;
     databaseIdleTimeout: number;
@@ -19,7 +19,7 @@ interface Dependencies {
     databaseUrl: string;
   };
   telemetry: Telemetry;
-}
+};
 
 export type Database = DatabasePool;
 
