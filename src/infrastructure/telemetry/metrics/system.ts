@@ -162,8 +162,8 @@ export function bindSystemMetrics({ metrics }: { metrics: Meter }) {
         key === "user"
           ? userUsageMicros
           : key === "system"
-          ? systemUsageMicros
-          : userUsageMicros + systemUsageMicros;
+            ? systemUsageMicros
+            : userUsageMicros + systemUsageMicros;
 
       observableResult.observe(value / 1e6);
     });
