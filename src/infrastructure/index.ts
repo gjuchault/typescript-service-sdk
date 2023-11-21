@@ -13,7 +13,7 @@ export { createHttpServer } from "./http/index.js";
 export type { Logger, LogLevel } from "./logger/index.js";
 export { createLogger, createMockLogger } from "./logger/index.js";
 export type { ShutdownManager } from "./shutdown/index.js";
-export * as shutdown from "./shutdown/index.js";
+export { createShutdownManager } from "./shutdown/index.js";
 export type { TaskScheduling } from "./task-scheduling/index.js";
 export { createTaskScheduling } from "./task-scheduling/index.js";
 export type { Telemetry } from "./telemetry/index.js";
