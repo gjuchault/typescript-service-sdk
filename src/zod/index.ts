@@ -21,7 +21,7 @@ export function parse<TOutput, TInput>(
   return zodResult.success ? ok(zodResult.data) : err(zodResult.error);
 }
 
-export function zodStringifiedNumber({
+export function stringifiedNumber({
   integer,
   min,
   max,
@@ -46,7 +46,7 @@ export function zodStringifiedNumber({
     );
 }
 
-export function zodStringifiedMs() {
+export function stringifiedMs() {
   return z
     .string()
     .refine((valueAsString) => parseStringMs(valueAsString).isSome())
