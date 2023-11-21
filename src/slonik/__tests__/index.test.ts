@@ -10,11 +10,11 @@ import {
   prepareBulkInsert,
 } from "../index.js";
 
-describe("createFailingQueryMockDatabase()", () => {
-  describe("given no arguments", () => {
+await describe("createFailingQueryMockDatabase()", async () => {
+  await describe("given no arguments", async () => {
     const { database, query } = createFailingQueryMockDatabase();
 
-    describe("when called", () => {
+    await describe("when called", async () => {
       let hasQueryFailed = false;
 
       before(async () => {
@@ -25,7 +25,7 @@ describe("createFailingQueryMockDatabase()", () => {
         }
       });
 
-      it("throws", () => {
+      await it("throws", () => {
         assert.equal(hasQueryFailed, true);
         assert.equal(query.mock.calls.length, 1);
 
@@ -38,11 +38,11 @@ describe("createFailingQueryMockDatabase()", () => {
   });
 });
 
-describe("createMockDatabase()", () => {
-  describe("given a mock result", () => {
+await describe("createMockDatabase()", async () => {
+  await describe("given a mock result", async () => {
     const { database, query } = createMockDatabase([{ id: 1 }, { id: 2 }]);
 
-    describe("when called", () => {
+    await describe("when called", async () => {
       let result: readonly { id: number }[] = [];
 
       before(async () => {
@@ -51,7 +51,7 @@ describe("createMockDatabase()", () => {
         );
       });
 
-      it("returns the mocked result", () => {
+      await it("returns the mocked result", () => {
         assert.equal(query.mock.calls.length, 1);
         assert.deepEqual(query.mock.calls[0]?.arguments, [
           "select id from foobar",
@@ -63,9 +63,9 @@ describe("createMockDatabase()", () => {
   });
 });
 
-describe("prepareBulkInsert()", () => {
-  describe("given an object structure, items and an iteratee", () => {
-    describe("when called", () => {
+await describe("prepareBulkInsert()", async () => {
+  await describe("given an object structure, items and an iteratee", async () => {
+    await describe("when called", async () => {
       const prepareBulkInsertResult = prepareBulkInsert(
         [
           ["id", "uuid"],
@@ -76,7 +76,7 @@ describe("prepareBulkInsert()", () => {
         (user) => ({ id: user.id, name: user.my_name, index: user.index }),
       );
 
-      it("returns the columns and data grid", () => {
+      await it("returns the columns and data grid", () => {
         assert.equal(prepareBulkInsertResult.isOk(), true);
 
         if (!prepareBulkInsertResult.isOk()) {

@@ -10,12 +10,12 @@ import {
   parseStringMs,
 } from "../index.js";
 
-describe("parse()", () => {
-  describe("given a schema and a input matching the schema", () => {
-    describe("when called", () => {
+await describe("parse()", async () => {
+  await describe("given a schema and a input matching the schema", async () => {
+    await describe("when called", async () => {
       const result = parse(z.string(), "foobar");
 
-      it("returns a success", () => {
+      await it("returns a success", () => {
         assert.equal(result.isOk(), true);
 
         if (!result.isOk()) {
@@ -27,11 +27,11 @@ describe("parse()", () => {
     });
   });
 
-  describe("given a schema and a input not matching the schema", () => {
-    describe("when called", () => {
+  await describe("given a schema and a input not matching the schema", async () => {
+    await describe("when called", async () => {
       const result = parse(z.string(), 123);
 
-      it("returns an error", () => {
+      await it("returns an error", () => {
         assert.equal(result.isErr(), true);
 
         if (!result.isErr()) {
@@ -44,12 +44,12 @@ describe("parse()", () => {
   });
 });
 
-describe("parseStringMinMax()", () => {
-  describe("given a valid ms value", () => {
+await describe("parseStringMinMax()", async () => {
+  await describe("given a valid ms value", async () => {
     const validMsValues = ["100", "50.2", "0", "-50.2", "-100"];
 
-    describe("when called", () => {
-      it("returns an option containing a value", () => {
+    await describe("when called", async () => {
+      await it("returns an option containing a value", () => {
         for (const input of validMsValues) {
           const result = parseStringMinMax(input, { min: -100, max: 100 });
 
@@ -65,11 +65,11 @@ describe("parseStringMinMax()", () => {
     });
   });
 
-  describe("given an invalid ms value", () => {
+  await describe("given an invalid ms value", async () => {
     const invalidMsValues = ["foobar", "-200", "-100.01", "100.01", "200"];
 
-    describe("when called", () => {
-      it("returns an option containing a value", () => {
+    await describe("when called", async () => {
+      await it("returns an option containing a value", () => {
         for (const input of invalidMsValues) {
           const result = parseStringMinMax(input, { min: -100, max: 100 });
           assert.equal(result.isNone(), true);
@@ -83,12 +83,12 @@ describe("parseStringMinMax()", () => {
   });
 });
 
-describe("parseStringMinMaxInteger()", () => {
-  describe("given a valid ms value", () => {
+await describe("parseStringMinMaxInteger()", async () => {
+  await describe("given a valid ms value", async () => {
     const validMsValues = ["100", "0", "-100"];
 
-    describe("when called", () => {
-      it("returns an option containing a value", () => {
+    await describe("when called", async () => {
+      await it("returns an option containing a value", () => {
         for (const input of validMsValues) {
           const result = parseStringMinMaxInteger(input, {
             min: -100,
@@ -106,11 +106,11 @@ describe("parseStringMinMaxInteger()", () => {
     });
   });
 
-  describe("given an invalid ms value", () => {
+  await describe("given an invalid ms value", async () => {
     const invalidMsValues = ["foobar", "-200", "-100.01", "100.01", "200"];
 
-    describe("when called", () => {
-      it("returns an option containing a value", () => {
+    await describe("when called", async () => {
+      await it("returns an option containing a value", () => {
         for (const input of invalidMsValues) {
           const result = parseStringMinMaxInteger(input, {
             min: -100,
@@ -127,8 +127,8 @@ describe("parseStringMinMaxInteger()", () => {
   });
 });
 
-describe("parseStringMs()", () => {
-  describe("given a valid ms value", () => {
+await describe("parseStringMs()", async () => {
+  await describe("given a valid ms value", async () => {
     const validMsValues = [
       "2 days",
       "1d",
@@ -144,8 +144,8 @@ describe("parseStringMs()", () => {
       "-200",
     ];
 
-    describe("when called", () => {
-      it("returns an option containing a value", () => {
+    await describe("when called", async () => {
+      await it("returns an option containing a value", () => {
         for (const input of validMsValues) {
           const result = parseStringMs(input);
           assert.equal(result.isSome(), true);
@@ -160,11 +160,11 @@ describe("parseStringMs()", () => {
     });
   });
 
-  describe("given an invalid ms value", () => {
+  await describe("given an invalid ms value", async () => {
     const invalidMsValues = ["foobar"];
 
-    describe("when called", () => {
-      it("returns an option containing a value", () => {
+    await describe("when called", async () => {
+      await it("returns an option containing a value", () => {
         for (const input of invalidMsValues) {
           const result = parseStringMs(input);
           assert.equal(result.isNone(), true);
