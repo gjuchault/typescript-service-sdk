@@ -70,7 +70,7 @@
     "rimraf": "^5.0.5",
     "semantic-release": "^22.0.10",
     "tsx": "^4.6.2",
-    "typescript": "^5.3.2"
+    "typescript": "^5.3.3"
   },
   "peerDependencies": {
     "@fastify/circuit-breaker": "^3.2.0",
