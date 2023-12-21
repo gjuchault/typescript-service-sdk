@@ -12,7 +12,8 @@ async function build() {
     format: "esm",
     nodePaths: [srcPath],
     sourcemap: true,
-    external: [],    bundle: true,
+    external: [],
+    bundle: true,
     entryPoints: [path.join(srcPath, "index.ts")],
     outdir: buildPath,
   });
