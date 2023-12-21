@@ -12,7 +12,7 @@ import type { Telemetry } from "../telemetry/index.js";
 
 const { context, trace } = api;
 
-type Dependencies = {
+export type Dependencies = {
   logger: Logger;
   httpServer: HttpServer;
   database: Database;

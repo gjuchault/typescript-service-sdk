@@ -9,8 +9,8 @@ import { isSome, none, some, unsafeUnwrap } from "../option.js";
 
 /**
  * validates an input against a zod schema and return a result from it
- * @param schema zod schema
- * @param input input
+ * @param schema - zod schema
+ * @param input - input
  */
 export function parse<TOutput, TInput>(
   schema: ZodType<TOutput, ZodTypeDef, TInput>,
@@ -57,7 +57,7 @@ export function stringifiedMs() {
 
 /**
  * validates a string to ensure it is a `ms` compatible value
- * @param valueAsString input
+ * @param valueAsString - input
  * @returns an option with the numeric value if the input is valid
  */
 export function parseStringMs(valueAsString: string): Option<number> {
@@ -76,8 +76,8 @@ export function parseStringMs(valueAsString: string): Option<number> {
 
 /**
  * validates a string to ensure it is an integer within a range
- * @param valueAsString input
- * @param range inclusive ranges to limit the value.
+ * @param valueAsString - input
+ * @param range - inclusive ranges to limit the value.
  * @returns an option with the numeric value if the input is valid
  */
 export function parseStringMinMaxInteger(
@@ -95,8 +95,8 @@ export function parseStringMinMaxInteger(
 
 /**
  * validates a string to ensure it is a number within a range
- * @param valueAsString input
- * @param range inclusive ranges to limit the value.
+ * @param valueAsString - input
+ * @param range - inclusive ranges to limit the value.
  * @returns an option with the numeric value if the input is valid
  */
 export function parseStringMinMax(

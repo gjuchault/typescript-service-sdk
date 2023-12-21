@@ -1,5 +1,33 @@
-export * from "./infrastructure/index.js";
-export * from "./narrow-types/index.js";
+export {
+  Cache,
+  createCacheStorage,
+  createDatabase,
+  createHttpServer,
+  createLogger,
+  createMockLogger,
+  createShutdownManager,
+  createTaskScheduling,
+  createTelemetry,
+  Database,
+  databaseMigration,
+  HttpReply,
+  HttpRequest,
+  HttpServer,
+  Logger,
+  LogLevel,
+  RouterImplementation,
+  ShutdownManager,
+  TaskScheduling,
+  Telemetry,
+} from "./infrastructure/index.js";
+export {
+  dateTime,
+  NonEmptyArray,
+  nonEmptyArray,
+  number,
+  ValidDate,
+  ValidDateTime,
+} from "./narrow-types/index.js";
 export type {
   Meter,
   PrometheusExporter,
@@ -9,5 +37,37 @@ export type {
   SpanStatusCode,
   Tracer,
 } from "./opentelemetry/index.js";
-export * as slonikHelpers from "./slonik/index.js";
-export * as zodHelpers from "./zod/index.js";
+export type {
+  PrepareBulkInsertError,
+  PrepareBulkInsertResult,
+} from "./slonik/index.js";
+import {
+  createFailingQueryMockDatabase,
+  createMockDatabase,
+  dropAllTables,
+  prepareBulkInsert,
+} from "./slonik/index.js";
+import {
+  parse,
+  parseStringMinMax,
+  parseStringMinMaxInteger,
+  parseStringMs,
+  stringifiedMs,
+  stringifiedNumber,
+} from "./zod/index.js";
+
+export const slonikHelpers = {
+  createFailingQueryMockDatabase,
+  createMockDatabase,
+  dropAllTables,
+  prepareBulkInsert,
+};
+
+export const zodHelpers = {
+  parse,
+  parseStringMinMax,
+  parseStringMinMaxInteger,
+  parseStringMs,
+  stringifiedMs,
+  stringifiedNumber,
+};

@@ -23,7 +23,7 @@ export function fromElements<T>(...input: NonEmptyArray<T>): NonEmptyArray<T> {
 /**
  * Combines two or more arrays.
  * This method returns a new array without modifying any existing arrays.
- * @param items Additional arrays and/or items to add to the end of the array.
+ * @param items - Additional arrays and/or items to add to the end of the array.
  */
 export function concat<TL>(
   ...items: [NonEmptyArray<TL>, ...TL[][]]
@@ -39,8 +39,8 @@ export function concat<TL>(
 
 /**
  * Returns the elements of an array that meet the condition specified in a callback function.
- * @param input The input array
- * @param predicate A function that accepts up to three arguments. The filter method calls the predicate function one time for each element in the array.
+ * @param input - The input array
+ * @param predicate - A function that accepts up to three arguments. The filter method calls the predicate function one time for each element in the array.
  */
 export function filter<T>(
   input: NonEmptyArray<T>,
@@ -55,8 +55,8 @@ export function filter<T>(
  * Returns a new array with all sub-array elements concatenated into it recursively up to the
  * specified depth.
  *
- * @param input The input array
- * @param depth The maximum recursion depth
+ * @param input - The input array
+ * @param depth - The maximum recursion depth
  */
 export function flat<T>(
   input: NonEmptyArray<T>,
@@ -70,8 +70,8 @@ export function flat<T>(
  * a new array.
  * This is identical to a map followed by flat with depth 1.
  *
- * @param input The input array
- * @param callback A function that accepts up to three arguments. The flatMap method calls the
+ * @param input - The input array
+ * @param callback - A function that accepts up to three arguments. The flatMap method calls the
  * callback function one time for each element in the array.
  */
 export function flatMap<T, U>(
@@ -87,8 +87,8 @@ export function flatMap<T, U>(
 
 /**
  * Calls a defined callback function on each element of an array, and returns an array that contains the results.
- * @param input The input array
- * @param callbackfn A function that accepts up to three arguments. The map method calls the callbackfn function one time for each element in the array.
+ * @param input - The input array
+ * @param callbackfn - A function that accepts up to three arguments. The map method calls the callbackfn function one time for each element in the array.
  */
 export function map<T, U>(
   input: NonEmptyArray<T>,
@@ -104,7 +104,7 @@ export function map<T, U>(
 /**
  * Reverses the elements in an array in place.
  * This method mutates the array and returns a reference to the same array.
- * @param input The input array
+ * @param input - The input array
  */
 export function reverse<T>(input: NonEmptyArray<T>): NonEmptyArray<T> {
   return input.reverse() as NonEmptyArray<T>;
@@ -114,10 +114,10 @@ export function reverse<T>(input: NonEmptyArray<T>): NonEmptyArray<T> {
  * Returns a copy of a section of an array.
  * For both start and end, a negative index can be used to indicate an offset from the end of the array.
  * For example, -2 refers to the second to last element of the array.
- * @param input The input array
- * @param start The beginning index of the specified portion of the array.
+ * @param input - The input array
+ * @param start - The beginning index of the specified portion of the array.
  * If start is undefined, then the slice begins at index 0.
- * @param end The end index of the specified portion of the array. This is exclusive of the element at the index 'end'.
+ * @param end - The end index of the specified portion of the array. This is exclusive of the element at the index 'end'.
  * If end is undefined, then the slice extends to the end of the array.
  */
 export function slice<T>(

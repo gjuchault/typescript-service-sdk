@@ -12,7 +12,7 @@ import { getSpanOptions } from "../telemetry/instrumentations/bullmq.js";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
-type Dependencies = {
+export type Dependencies = {
   config: { name: string; logLevel: LogLevel; redisUrl: string };
   cache: Cache;
   telemetry: Telemetry;

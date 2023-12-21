@@ -43,7 +43,7 @@ export function isNone<T>(option: Option<T>): option is None {
  * by applying a function to a contained `Some` value, leaving a `None` value
  * untouched.
  *
- * @param f The function to apply a `Some` value
+ * @param f - The function to apply a `Some` value
  * @returns the result of applying `f` or a `None` untouched
  */
 export function map<T, U>(option: Option<T>, mapper: (t: T) => U): Option<U> {
@@ -72,7 +72,7 @@ export function unsafeUnwrap<T>(option: Option<T>): T {
  * Used to extract the value out of a `Some`, returning a fallback when the
  * result is a `None`
  *
- * @param fallback The fallback to return when the result is a `None`
+ * @param fallback - The fallback to return when the result is a `None`
  */
 export function unwrapOr<T, U>(option: Option<T>, fallback: U): T | U {
   if (isSome(option)) {
@@ -88,7 +88,7 @@ export function unwrapOr<T, U>(option: Option<T>, fallback: U): T | U {
  * This is useful for when you need to do a subsequent computation using the
  * inner `T` value, but that computation might fail.
  *
- * @param f The function to apply to the current value
+ * @param f - The function to apply to the current value
  */
 export function andThen<T, U>(
   option: Option<T>,
@@ -105,7 +105,7 @@ export function andThen<T, U>(
  * Used to create a neverthrow `Result` from an `Option`. `Some` will match
  * `Ok` and `None` will match `Error`
  *
- * @param error The error to apply when the `Option` is a `None`
+ * @param error - The error to apply when the `Option` is a `None`
  */
 export function toResult<T, E>(option: Option<T>, error: E): Result<T, E> {
   if (isSome(option)) {
