@@ -41,10 +41,6 @@ export function createTaskScheduling({
   // prevent bullmq from reading from node_modules that might not exist if we
   // bundle the files
   scriptLoader.load = async (client: Cache) => {
-    if (process.env.NODE_ENV === "test") {
-      return;
-    }
-
     const scripts = await scriptLoader.loadScripts(
       path.join(__dirname, "./bullmq-commands"),
     );

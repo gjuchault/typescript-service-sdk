@@ -22,7 +22,7 @@ import { createPinoSpanExporter } from "./pino-exporter.js";
 
 const { W3CTraceContextPropagator } = core;
 const { Resource } = resources;
-const { InMemorySpanExporter, TraceIdRatioBasedSampler } = sdkTraceBase;
+const { TraceIdRatioBasedSampler } = sdkTraceBase;
 const { SemanticResourceAttributes } = semanticConventions;
 const {
   context,
@@ -54,17 +54,16 @@ export function createTelemetry({
   config: {
     name: string;
     version: string;
-    env: "production" | "development" | "test";
+    envName: string;
     logLevel: LogLevel;
     tracingSampling: number;
   };
 }): Telemetry {
   const logger = createLogger("telemetry", { config });
 
-  const traceExporter: SdkTraceBaseSpanExporter =
-    config.env === "production"
-      ? createPinoSpanExporter({ logger })
-      : new InMemorySpanExporter();
+  const traceExporter: SdkTraceBaseSpanExporter = createPinoSpanExporter({
+    logger,
+  });
 
   const metricReader = new exporterPrometheus.PrometheusExporter({
     preventServerStart: true,
@@ -76,7 +75,7 @@ export function createTelemetry({
     sampler: new TraceIdRatioBasedSampler(config.tracingSampling),
     resource: new Resource({
       [SemanticResourceAttributes.SERVICE_NAME]: config.name,
-      [SemanticResourceAttributes.DEPLOYMENT_ENVIRONMENT]: config.env,
+      [SemanticResourceAttributes.DEPLOYMENT_ENVIRONMENT]: config.envName,
       [SemanticResourceAttributes.PROCESS_PID]: process.pid,
     }),
     autoDetectResources: false,
