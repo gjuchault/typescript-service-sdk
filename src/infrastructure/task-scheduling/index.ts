@@ -5,17 +5,16 @@ import type { Job, JobsOptions } from "bullmq";
 import { Queue, scriptLoader, Worker } from "bullmq";
 
 import type { Cache } from "../cache/index.js";
-import type { LogLevel } from "../logger/index.js";
-import { createLogger } from "../logger/index.js";
+import type { DependencyStore } from "../index.js";
+import type { CreateLogger } from "../logger/index.js";
 import type { Telemetry } from "../telemetry/index.js";
 import { getSpanOptions } from "../telemetry/instrumentations/bullmq.js";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 export type Dependencies = {
-  config: { name: string; logLevel: LogLevel; redisUrl: string };
-  cache: Cache;
-  telemetry: Telemetry;
+  config: { name: string; redisUrl: string };
+  dependencyStore: DependencyStore;
 };
 
 export type TaskScheduling = {
@@ -31,9 +30,12 @@ export type TaskScheduling = {
 
 export function createTaskScheduling({
   config,
-  cache,
-  telemetry,
+  dependencyStore,
 }: Dependencies): TaskScheduling {
+  const createLogger = dependencyStore.retrieve<CreateLogger>("logger");
+  const cache = dependencyStore.retrieve<Cache>("cache");
+  const telemetry = dependencyStore.retrieve<Telemetry>("telemetry");
+
   const allQueues: Queue[] = [];
   const allWorkers: Worker[] = [];
   const allConnections: Cache[] = [];
@@ -58,9 +60,7 @@ export function createTaskScheduling({
       workersCount = 1,
     ) {
       const name = `${config.name}-task-scheduling-${taskName}`;
-      const logger = createLogger(`task-scheduling-${taskName}`, {
-        config,
-      });
+      const logger = createLogger(`task-scheduling-${taskName}`);
 
       const queueConnection = cache.duplicate({ maxRetriesPerRequest: null });
       const queue = new Queue(name, {

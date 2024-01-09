@@ -6,20 +6,16 @@ import type { HttpServer } from "../../infrastructure/http/index.js";
 import { api } from "../../opentelemetry/index.js";
 import type { Cache } from "../cache/index.js";
 import type { Database } from "../database/index.js";
-import type { Logger } from "../logger/index.js";
+import type { DependencyStore } from "../index.js";
+import type { CreateLogger } from "../logger/index.js";
 import type { TaskScheduling } from "../task-scheduling/index.js";
 import type { Telemetry } from "../telemetry/index.js";
 
 const { context, trace } = api;
 
 export type Dependencies = {
-  logger: Logger;
-  httpServer: HttpServer;
-  database: Database;
-  taskScheduling: TaskScheduling;
-  cache: Cache;
-  telemetry: Telemetry;
   config: { name: string; version: string };
+  dependencyStore: DependencyStore;
   exit: (statusCode: number) => void;
 };
 
@@ -29,15 +25,20 @@ export type ShutdownManager = {
 };
 
 export function createShutdownManager({
-  logger,
-  httpServer,
-  database,
-  taskScheduling,
-  cache,
-  telemetry,
   config,
+  dependencyStore,
   exit,
 }: Dependencies) {
+  const createLogger = dependencyStore.retrieve<CreateLogger>("logger");
+  const telemetry = dependencyStore.retrieve<Telemetry>("telemetry");
+  const cache = dependencyStore.retrieve<Cache>("cache");
+  const database = dependencyStore.retrieve<Database>("database");
+  const taskScheduling =
+    dependencyStore.retrieve<TaskScheduling>("taskScheduling");
+  const httpServer = dependencyStore.retrieve<HttpServer>("httpServer");
+
+  const logger = createLogger("shutdown");
+
   const httpTerminator = createHttpTerminator({
     server: httpServer.server,
     gracefulTerminationTimeout: ms("10s"),
