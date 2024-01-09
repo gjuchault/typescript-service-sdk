@@ -16,7 +16,6 @@ import {
   semanticConventions,
 } from "../../opentelemetry/index.js";
 import type { DependencyStore } from "../index.js";
-import type { CreateLogger } from "../logger/index.js";
 import { bindSystemMetrics } from "./metrics/system.js";
 import { createPinoSpanExporter } from "./pino-exporter.js";
 
@@ -60,7 +59,7 @@ export function createTelemetry({
   };
   dependencyStore: DependencyStore;
 }): Telemetry {
-  const createLogger = dependencyStore.retrieve<CreateLogger>("logger");
+  const createLogger = dependencyStore.get("logger");
   const logger = createLogger("telemetry");
 
   const traceExporter: SdkTraceBaseSpanExporter = createPinoSpanExporter({

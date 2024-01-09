@@ -6,8 +6,6 @@ import { Queue, scriptLoader, Worker } from "bullmq";
 
 import type { Cache } from "../cache/index.js";
 import type { DependencyStore } from "../index.js";
-import type { CreateLogger } from "../logger/index.js";
-import type { Telemetry } from "../telemetry/index.js";
 import { getSpanOptions } from "../telemetry/instrumentations/bullmq.js";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
@@ -32,9 +30,9 @@ export function createTaskScheduling({
   config,
   dependencyStore,
 }: Dependencies): TaskScheduling {
-  const createLogger = dependencyStore.retrieve<CreateLogger>("logger");
-  const cache = dependencyStore.retrieve<Cache>("cache");
-  const telemetry = dependencyStore.retrieve<Telemetry>("telemetry");
+  const createLogger = dependencyStore.get("logger");
+  const cache = dependencyStore.get("cache");
+  const telemetry = dependencyStore.get("telemetry");
 
   const allQueues: Queue[] = [];
   const allWorkers: Worker[] = [];

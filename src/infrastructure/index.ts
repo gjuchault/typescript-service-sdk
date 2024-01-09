@@ -3,6 +3,8 @@ export { createCacheStorage } from "./cache/index.js";
 export type { Database } from "./database/index.js";
 export { createDatabase } from "./database/index.js";
 import { buildMigration, extractMigrations } from "./database/migration.js";
+export type { DateProvider } from "./date/index.js";
+export { createDateProvider } from "./date/index.js";
 export type { DependencyStore } from "./dependency-store/index.js";
 export { createDependencyStore } from "./dependency-store/index.js";
 export type {
@@ -12,7 +14,7 @@ export type {
   RouterImplementation,
 } from "./http/index.js";
 export { createHttpServer } from "./http/index.js";
-export type { Logger, LogLevel } from "./logger/index.js";
+export type { CreateLogger, Logger, LogLevel } from "./logger/index.js";
 export {
   createLoggerProvider,
   createMockLoggerProvider,

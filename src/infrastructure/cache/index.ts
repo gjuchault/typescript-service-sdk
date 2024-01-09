@@ -3,8 +3,6 @@ import ms from "ms";
 
 import { promiseWithTimeout } from "../../helpers/promise-with-timeout.js";
 import type { DependencyStore } from "../index.js";
-import type { CreateLogger } from "../logger/index.js";
-import type { Telemetry } from "../telemetry/index.js";
 import { getSpanOptions } from "../telemetry/instrumentations/ioredis.js";
 
 export type Dependencies = {
@@ -18,8 +16,8 @@ export async function createCacheStorage({
   dependencyStore,
   config,
 }: Dependencies): Promise<Cache> {
-  const createLogger = dependencyStore.retrieve<CreateLogger>("logger");
-  const telemetry = dependencyStore.retrieve<Telemetry>("telemetry");
+  const createLogger = dependencyStore.get("logger");
+  const telemetry = dependencyStore.get("telemetry");
   const logger = createLogger("redis");
 
   const redis = new Redis(config.redisUrl, {});

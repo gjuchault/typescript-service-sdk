@@ -1,24 +1,56 @@
-export type DependencyStore = {
-  provide(name: string, provider: unknown): void;
-  retrieve<T>(name: string): T;
+import type {
+  Cache,
+  CreateLogger,
+  Database,
+  DateProvider,
+  HttpServer,
+  TaskScheduling,
+  Telemetry,
+} from "../index.js";
+
+type DefaultSdkStore = {
+  logger: CreateLogger;
+  telemetry: Telemetry;
+  date: DateProvider;
+  cache: Cache;
+  taskScheduling: TaskScheduling;
+  database: Database;
+  httpServer: HttpServer;
 };
 
-export function createDependencyStore(): DependencyStore {
-  const store = new Map<string, unknown>();
+export type DependencyStore<TStore = DefaultSdkStore> = {
+  set<TKey extends keyof (TStore & DefaultSdkStore)>(
+    name: TKey,
+    provider: (TStore & DefaultSdkStore)[TKey],
+  ): void;
+  get<TKey extends keyof (TStore & DefaultSdkStore)>(
+    name: TKey,
+  ): (TStore & DefaultSdkStore)[TKey];
+};
+
+export function createDependencyStore<
+  TStore = DefaultSdkStore,
+>(): DependencyStore<TStore & DefaultSdkStore> {
+  const store: TStore & DefaultSdkStore = {} as TStore & DefaultSdkStore;
 
   return {
-    provide(name: string, provider: unknown) {
-      store.set(name, provider);
+    set<TKey extends keyof (TStore & DefaultSdkStore)>(
+      name: TKey,
+      provider: (TStore & DefaultSdkStore)[TKey],
+    ) {
+      store[name] = provider;
     },
 
-    retrieve<T>(name: string): T {
-      const provider = store.get(name);
+    get<TKey extends keyof (TStore & DefaultSdkStore)>(
+      name: TKey,
+    ): (TStore & DefaultSdkStore)[TKey] {
+      const provider = store[name];
 
       if (!provider) {
-        throw new Error(`No provider for ${name}`);
+        throw new Error(`No provider for ${name.toString()}`);
       }
 
-      return provider as T;
+      return provider;
     },
   };
 }

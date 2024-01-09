@@ -2,14 +2,8 @@ import { createHttpTerminator } from "http-terminator";
 import ms from "ms";
 
 import { promiseWithTimeout } from "../../helpers/promise-with-timeout.js";
-import type { HttpServer } from "../../infrastructure/http/index.js";
 import { api } from "../../opentelemetry/index.js";
-import type { Cache } from "../cache/index.js";
-import type { Database } from "../database/index.js";
 import type { DependencyStore } from "../index.js";
-import type { CreateLogger } from "../logger/index.js";
-import type { TaskScheduling } from "../task-scheduling/index.js";
-import type { Telemetry } from "../telemetry/index.js";
 
 const { context, trace } = api;
 
@@ -29,13 +23,12 @@ export function createShutdownManager({
   dependencyStore,
   exit,
 }: Dependencies) {
-  const createLogger = dependencyStore.retrieve<CreateLogger>("logger");
-  const telemetry = dependencyStore.retrieve<Telemetry>("telemetry");
-  const cache = dependencyStore.retrieve<Cache>("cache");
-  const database = dependencyStore.retrieve<Database>("database");
-  const taskScheduling =
-    dependencyStore.retrieve<TaskScheduling>("taskScheduling");
-  const httpServer = dependencyStore.retrieve<HttpServer>("httpServer");
+  const createLogger = dependencyStore.get("logger");
+  const telemetry = dependencyStore.get("telemetry");
+  const cache = dependencyStore.get("cache");
+  const database = dependencyStore.get("database");
+  const taskScheduling = dependencyStore.get("taskScheduling");
+  const httpServer = dependencyStore.get("httpServer");
 
   const logger = createLogger("shutdown");
 

@@ -3,8 +3,6 @@ import { createPool, sql } from "slonik";
 import { z } from "zod";
 
 import type { DependencyStore } from "../index.js";
-import type { CreateLogger } from "../logger/index.js";
-import type { Telemetry } from "../telemetry/index.js";
 import {
   createSlonikTelemetryInterceptor,
   getSpanOptions,
@@ -26,8 +24,8 @@ export async function createDatabase({
   config,
   dependencyStore,
 }: Dependencies): Promise<Database> {
-  const createLogger = dependencyStore.retrieve<CreateLogger>("logger");
-  const telemetry = dependencyStore.retrieve<Telemetry>("telemetry");
+  const createLogger = dependencyStore.get("logger");
+  const telemetry = dependencyStore.get("telemetry");
   const logger = createLogger("database");
 
   const {

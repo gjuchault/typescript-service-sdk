@@ -21,15 +21,10 @@ import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { fastify } from "fastify";
 import ms from "ms";
 
-import type {
-  CreateLogger,
-  LogLevel,
-} from "../../infrastructure/logger/index.js";
+import type { LogLevel } from "../../infrastructure/logger/index.js";
 import { createOpenTelemetryPluginOptions } from "../../infrastructure/telemetry/instrumentations/fastify.js";
 import { metricsPlugin } from "../../infrastructure/telemetry/metrics/fastify.js";
-import type { Cache } from "../cache/index.js";
 import type { DependencyStore } from "../index.js";
-import type { Telemetry } from "../telemetry/index.js";
 import { openTelemetryPlugin } from "./fastify-opentelemetry.js";
 
 export type HttpServer = FastifyInstance;
@@ -51,9 +46,9 @@ export async function createHttpServer<
   dependencyStore: DependencyStore;
   appRouter: TAppRouter;
 }) {
-  const createLogger = dependencyStore.retrieve<CreateLogger>("logger");
-  const telemetry = dependencyStore.retrieve<Telemetry>("telemetry");
-  const cache = dependencyStore.retrieve<Cache>("cache");
+  const createLogger = dependencyStore.get("logger");
+  const telemetry = dependencyStore.get("telemetry");
+  const cache = dependencyStore.get("cache");
 
   const logger = createLogger("http");
 
