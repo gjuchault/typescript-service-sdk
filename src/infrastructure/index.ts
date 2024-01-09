@@ -3,6 +3,8 @@ export { createCacheStorage } from "./cache/index.js";
 export type { Database } from "./database/index.js";
 export { createDatabase } from "./database/index.js";
 import { buildMigration, extractMigrations } from "./database/migration.js";
+export type { DependencyStore } from "./dependency-store/index.js";
+export { createDependencyStore } from "./dependency-store/index.js";
 export type {
   HttpReply,
   HttpRequest,
@@ -11,7 +13,10 @@ export type {
 } from "./http/index.js";
 export { createHttpServer } from "./http/index.js";
 export type { Logger, LogLevel } from "./logger/index.js";
-export { createLogger, createMockLogger } from "./logger/index.js";
+export {
+  createLoggerProvider,
+  createMockLoggerProvider,
+} from "./logger/index.js";
 export type { ShutdownManager } from "./shutdown/index.js";
 export { createShutdownManager } from "./shutdown/index.js";
 export type { TaskScheduling } from "./task-scheduling/index.js";

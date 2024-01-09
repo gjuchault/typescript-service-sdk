@@ -15,8 +15,8 @@ import {
   sdkTraceBase,
   semanticConventions,
 } from "../../opentelemetry/index.js";
-import type { LogLevel } from "../logger/index.js";
-import { createLogger } from "../logger/index.js";
+import type { DependencyStore } from "../index.js";
+import type { CreateLogger } from "../logger/index.js";
 import { bindSystemMetrics } from "./metrics/system.js";
 import { createPinoSpanExporter } from "./pino-exporter.js";
 
@@ -50,16 +50,18 @@ type StartSpanCallback<TResolved> = (
 
 export function createTelemetry({
   config,
+  dependencyStore,
 }: {
   config: {
     name: string;
     version: string;
     envName: string;
-    logLevel: LogLevel;
     tracingSampling: number;
   };
+  dependencyStore: DependencyStore;
 }): Telemetry {
-  const logger = createLogger("telemetry", { config });
+  const createLogger = dependencyStore.retrieve<CreateLogger>("logger");
+  const logger = createLogger("telemetry");
 
   const traceExporter: SdkTraceBaseSpanExporter = createPinoSpanExporter({
     logger,

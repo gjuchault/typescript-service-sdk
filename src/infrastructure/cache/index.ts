@@ -2,23 +2,25 @@ import { Redis } from "ioredis";
 import ms from "ms";
 
 import { promiseWithTimeout } from "../../helpers/promise-with-timeout.js";
-import type { LogLevel } from "../logger/index.js";
-import { createLogger } from "../logger/index.js";
+import type { DependencyStore } from "../index.js";
+import type { CreateLogger } from "../logger/index.js";
 import type { Telemetry } from "../telemetry/index.js";
 import { getSpanOptions } from "../telemetry/instrumentations/ioredis.js";
 
 export type Dependencies = {
-  config: { redisUrl: string; logLevel: LogLevel };
-  telemetry: Telemetry;
+  dependencyStore: DependencyStore;
+  config: { redisUrl: string };
 };
 
 export type Cache = Redis;
 
 export async function createCacheStorage({
+  dependencyStore,
   config,
-  telemetry,
 }: Dependencies): Promise<Cache> {
-  const logger = createLogger("redis", { config });
+  const createLogger = dependencyStore.retrieve<CreateLogger>("logger");
+  const telemetry = dependencyStore.retrieve<Telemetry>("telemetry");
+  const logger = createLogger("redis");
 
   const redis = new Redis(config.redisUrl, {});
 

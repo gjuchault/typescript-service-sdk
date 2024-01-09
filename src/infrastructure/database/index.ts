@@ -2,8 +2,8 @@ import type { DatabasePool } from "slonik";
 import { createPool, sql } from "slonik";
 import { z } from "zod";
 
-import type { LogLevel } from "../logger/index.js";
-import { createLogger } from "../logger/index.js";
+import type { DependencyStore } from "../index.js";
+import type { CreateLogger } from "../logger/index.js";
 import type { Telemetry } from "../telemetry/index.js";
 import {
   createSlonikTelemetryInterceptor,
@@ -12,22 +12,23 @@ import {
 
 export type Dependencies = {
   config: {
-    logLevel: LogLevel;
     databaseIdleTimeout: number;
     databaseStatementTimeout: number;
     databaseMaximumPoolSize: number;
     databaseUrl: string;
   };
-  telemetry: Telemetry;
+  dependencyStore: DependencyStore;
 };
 
 export type Database = DatabasePool;
 
 export async function createDatabase({
   config,
-  telemetry,
+  dependencyStore,
 }: Dependencies): Promise<Database> {
-  const logger = createLogger("database", { config });
+  const createLogger = dependencyStore.retrieve<CreateLogger>("logger");
+  const telemetry = dependencyStore.retrieve<Telemetry>("telemetry");
+  const logger = createLogger("database");
 
   const {
     databaseIdleTimeout: idleTimeout,
