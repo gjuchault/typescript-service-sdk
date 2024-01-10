@@ -18,39 +18,50 @@ type DefaultSdkStore = {
   httpServer: HttpServer;
 };
 
-export type DependencyStore<TStore = DefaultSdkStore> = {
-  set<TKey extends keyof (TStore & DefaultSdkStore)>(
+type Fallback<TExtendedStore, K> = K extends keyof TExtendedStore
+  ? TExtendedStore[K]
+  : K extends keyof DefaultSdkStore
+    ? DefaultSdkStore[K]
+    : never;
+
+export type DependencyStore<TExtendedStore = Record<never, never>> = {
+  set<TKey extends keyof DefaultSdkStore | keyof TExtendedStore>(
     name: TKey,
-    provider: (TStore & DefaultSdkStore)[TKey],
+    provider: Fallback<TExtendedStore, TKey>,
   ): void;
-  get<TKey extends keyof (TStore & DefaultSdkStore)>(
+  get<TKey extends keyof DefaultSdkStore | keyof TExtendedStore>(
     name: TKey,
-  ): (TStore & DefaultSdkStore)[TKey];
+  ): Fallback<TExtendedStore, TKey>;
 };
 
 export function createDependencyStore<
-  TStore = DefaultSdkStore,
->(): DependencyStore<TStore & DefaultSdkStore> {
-  const store: TStore & DefaultSdkStore = {} as TStore & DefaultSdkStore;
+  TExtendedStore = Record<never, never>,
+>(): DependencyStore<TExtendedStore> {
+  type LocalStore = Partial<
+    Omit<DefaultSdkStore, keyof TExtendedStore> & TExtendedStore
+  >;
+
+  const store: LocalStore = {};
 
   return {
-    set<TKey extends keyof (TStore & DefaultSdkStore)>(
+    set<TKey extends keyof DefaultSdkStore | keyof TExtendedStore>(
       name: TKey,
-      provider: (TStore & DefaultSdkStore)[TKey],
-    ) {
-      store[name] = provider;
+      provider: Fallback<TExtendedStore, TKey>,
+    ): void {
+      store[name as keyof LocalStore] =
+        provider as LocalStore[keyof LocalStore];
     },
 
-    get<TKey extends keyof (TStore & DefaultSdkStore)>(
+    get<TKey extends keyof DefaultSdkStore | keyof TExtendedStore>(
       name: TKey,
-    ): (TStore & DefaultSdkStore)[TKey] {
-      const provider = store[name];
+    ): Fallback<TExtendedStore, TKey> {
+      const provider = store[name as keyof LocalStore];
 
       if (!provider) {
         throw new Error(`No provider for ${name.toString()}`);
       }
 
-      return provider;
+      return provider as Fallback<TExtendedStore, TKey>;
     },
   };
 }
