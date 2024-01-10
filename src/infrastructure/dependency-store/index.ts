@@ -18,10 +18,10 @@ type DefaultSdkStore = {
   httpServer: HttpServer;
 };
 
-type Fallback<TExtendedStore, K> = K extends keyof TExtendedStore
-  ? TExtendedStore[K]
-  : K extends keyof DefaultSdkStore
-    ? DefaultSdkStore[K]
+type Fallback<TExtendedStore, K> = K extends keyof DefaultSdkStore
+  ? DefaultSdkStore[K]
+  : K extends keyof TExtendedStore
+    ? TExtendedStore[K]
     : never;
 
 export type DependencyStore<TExtendedStore = Record<never, never>> = {
