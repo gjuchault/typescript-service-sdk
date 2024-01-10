@@ -12,27 +12,27 @@ await describe("createDependencyStore()", async () => {
       foo: "baz";
     };
 
-    const store = createDependencyStore<ExtendedStore>();
+    const defaultLogger = () => {
+      const logger = (() => {}) as unknown as Logger;
+      return logger;
+    };
+
+    const defaultDateProvider = {
+      nowAsNumber() {
+        return Date.now();
+      },
+      nowAsDate() {
+        return new Date();
+      },
+    };
+
+    const store = createDependencyStore<ExtendedStore>({
+      logger: defaultLogger,
+      date: defaultDateProvider,
+    });
 
     await it("should allow to set the provider", () => {
-      const defaultLogger = () => {
-        const logger = (() => {}) as unknown as Logger;
-        return logger;
-      };
-
       const loggerOverride = () => {};
-
-      const defaultDateProvider = {
-        nowAsNumber() {
-          return Date.now();
-        },
-        nowAsDate() {
-          return new Date();
-        },
-      };
-
-      store.set("logger", defaultLogger);
-      store.set("date", defaultDateProvider);
 
       // @ts-expect-error the following line should fail without this expect-error
       store.set("logger", loggerOverride);

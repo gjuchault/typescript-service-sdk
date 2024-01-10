@@ -34,28 +34,26 @@ export type DependencyStore<TExtendedStore = Record<never, never>> = {
   ): Fallback<TExtendedStore, TKey>;
 };
 
-export function createDependencyStore<
-  TExtendedStore = Record<never, never>,
->(): DependencyStore<TExtendedStore> {
-  type LocalStore = Partial<
+export function createDependencyStore<TExtendedStore = Record<never, never>>(
+  initialProviders: Partial<
     Omit<DefaultSdkStore, keyof TExtendedStore> & TExtendedStore
-  >;
-
-  const store: LocalStore = {};
+  > = {},
+): DependencyStore<TExtendedStore> {
+  type Store = typeof initialProviders;
+  const store = initialProviders;
 
   return {
     set<TKey extends keyof DefaultSdkStore | keyof TExtendedStore>(
       name: TKey,
       provider: Fallback<TExtendedStore, TKey>,
     ): void {
-      store[name as keyof LocalStore] =
-        provider as LocalStore[keyof LocalStore];
+      store[name as keyof Store] = provider as Store[keyof Store];
     },
 
     get<TKey extends keyof DefaultSdkStore | keyof TExtendedStore>(
       name: TKey,
     ): Fallback<TExtendedStore, TKey> {
-      const provider = store[name as keyof LocalStore];
+      const provider = store[name as keyof Store];
 
       if (!provider) {
         throw new Error(`No provider for ${name.toString()}`);
