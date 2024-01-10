@@ -5,6 +5,7 @@ export {
   createDateProvider,
   createDependencyStore,
   createHttpServer,
+  CreateLogger,
   createLoggerProvider,
   createMockLoggerProvider,
   createShutdownManager,
