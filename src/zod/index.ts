@@ -12,47 +12,47 @@ import { isSome, none, some, unsafeUnwrap } from "../option.js";
  * @param schema - zod schema
  * @param input - input
  */
-export function parse<TOutput, TInput>(
-  schema: ZodType<TOutput, ZodTypeDef, TInput>,
-  input: unknown,
-): Result<TOutput, ZodError<TInput>> {
-  const zodResult = schema.safeParse(input);
+export function parse<Output, Input>(
+	schema: ZodType<Output, ZodTypeDef, Input>,
+	input: unknown,
+): Result<Output, ZodError<Input>> {
+	const zodResult = schema.safeParse(input);
 
-  return zodResult.success ? ok(zodResult.data) : err(zodResult.error);
+	return zodResult.success ? ok(zodResult.data) : err(zodResult.error);
 }
 
 export function stringifiedNumber({
-  integer,
-  min,
-  max,
+	integer,
+	min,
+	max,
 }: {
-  integer: boolean;
-  min: number;
-  max: number;
+	integer: boolean;
+	min: number;
+	max: number;
 }) {
-  return z
-    .string()
-    .refine((valueAsString) =>
-      isSome(
-        integer
-          ? parseStringMinMaxInteger(valueAsString, { min, max })
-          : parseStringMinMax(valueAsString, { min, max }),
-      ),
-    )
-    .transform((valueAsString) =>
-      unsafeUnwrap(
-        integer
-          ? parseStringMinMaxInteger(valueAsString, { min, max })
-          : parseStringMinMax(valueAsString, { min, max }),
-      ),
-    );
+	return z
+		.string()
+		.refine((valueAsString) =>
+			isSome(
+				integer
+					? parseStringMinMaxInteger(valueAsString, { min, max })
+					: parseStringMinMax(valueAsString, { min, max }),
+			),
+		)
+		.transform((valueAsString) =>
+			unsafeUnwrap(
+				integer
+					? parseStringMinMaxInteger(valueAsString, { min, max })
+					: parseStringMinMax(valueAsString, { min, max }),
+			),
+		);
 }
 
 export function stringifiedMs() {
-  return z
-    .string()
-    .refine((valueAsString) => isSome(parseStringMs(valueAsString)))
-    .transform((valueAsString) => unsafeUnwrap(parseStringMs(valueAsString)));
+	return z
+		.string()
+		.refine((valueAsString) => isSome(parseStringMs(valueAsString)))
+		.transform((valueAsString) => unsafeUnwrap(parseStringMs(valueAsString)));
 }
 
 /**
@@ -61,17 +61,17 @@ export function stringifiedMs() {
  * @returns an option with the numeric value if the input is valid
  */
 export function parseStringMs(valueAsString: string): Option<number> {
-  try {
-    const value = ms(valueAsString);
+	try {
+		const value = ms(valueAsString);
 
-    if (Number.isSafeInteger(value)) {
-      return some(value);
-    }
+		if (Number.isSafeInteger(value)) {
+			return some(value);
+		}
 
-    return none();
-  } catch {
-    return none();
-  }
+		return none();
+	} catch {
+		return none();
+	}
 }
 
 /**
@@ -81,16 +81,16 @@ export function parseStringMs(valueAsString: string): Option<number> {
  * @returns an option with the numeric value if the input is valid
  */
 export function parseStringMinMaxInteger(
-  valueAsString: string,
-  range: { min: number; max: number },
+	valueAsString: string,
+	range: { min: number; max: number },
 ): Option<number> {
-  const value = Number(valueAsString);
+	const value = Number(valueAsString);
 
-  if (Number.isSafeInteger(value) && value >= range.min && value <= range.max) {
-    return some(value);
-  }
+	if (Number.isSafeInteger(value) && value >= range.min && value <= range.max) {
+		return some(value);
+	}
 
-  return none();
+	return none();
 }
 
 /**
@@ -100,14 +100,14 @@ export function parseStringMinMaxInteger(
  * @returns an option with the numeric value if the input is valid
  */
 export function parseStringMinMax(
-  valueAsString: string,
-  range: { min: number; max: number },
+	valueAsString: string,
+	range: { min: number; max: number },
 ): Option<number> {
-  const value = Number(valueAsString);
+	const value = Number(valueAsString);
 
-  if (Number.isFinite(value) && value >= range.min && value <= range.max) {
-    return some(value);
-  }
+	if (Number.isFinite(value) && value >= range.min && value <= range.max) {
+		return some(value);
+	}
 
-  return none();
+	return none();
 }
