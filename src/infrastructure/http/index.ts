@@ -11,7 +11,7 @@ import rateLimit from "@fastify/rate-limit";
 import underPressure from "@fastify/under-pressure";
 import type {
 	AppRoute,
-	AppRouter,
+	AppRouter as TsRestAppRouter,
 	ServerInferRequest,
 	ServerInferResponses,
 } from "@ts-rest/core";
@@ -149,7 +149,7 @@ export async function createHttpServer<
 	httpServer.get("/api/docs", (_request, reply) => {
 		return reply.send(
 			generateOpenApi(
-				appRouter.contract,
+				appRouter.contract as TsRestAppRouter,
 				{
 					info: {
 						title: config.name,
@@ -179,8 +179,8 @@ type AppRouteImplementation<T extends AppRoute> = (
 	},
 ) => Promise<ServerInferResponses<T>>;
 
-export type RouterImplementation<T extends AppRouter> = {
-	[Key in keyof T]: T[Key] extends AppRouter
+export type RouterImplementation<T extends TsRestAppRouter> = {
+	[Key in keyof T]: T[Key] extends TsRestAppRouter
 		? RouterImplementation<T[Key]>
 		: T[Key] extends AppRoute
 		  ? AppRouteImplementation<T[Key]>
