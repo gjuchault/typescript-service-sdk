@@ -3,22 +3,22 @@ import { api } from "../../../opentelemetry/index.js";
 const { context, trace } = api;
 
 export function pinoMixin(data: object) {
-  const span = trace.getSpan(context.active());
+	const span = trace.getSpan(context.active());
 
-  if (!span) {
-    return {};
-  }
+	if (!span) {
+		return {};
+	}
 
-  const spanContext = span.spanContext();
+	const spanContext = span.spanContext();
 
-  const recordData = data as Record<string, unknown>;
+	const recordData = data as Record<string, unknown>;
 
-  const record = {
-    traceId: recordData.traceId ?? spanContext.traceId,
-    spanId: recordData.spanId ?? spanContext.spanId,
-    traceFlags:
-      recordData.traceFlags ?? `0${spanContext.traceFlags.toString(16)}`,
-  };
+	const record = {
+		traceId: recordData.traceId ?? spanContext.traceId,
+		spanId: recordData.spanId ?? spanContext.spanId,
+		traceFlags:
+			recordData.traceFlags ?? `0${spanContext.traceFlags.toString(16)}`,
+	};
 
-  return record;
+	return record;
 }

@@ -2,22 +2,22 @@ import type { Result } from "neverthrow";
 import { err, ok } from "neverthrow";
 
 export type Some<T> = {
-  kind: "some";
-  data: T;
+	kind: "some";
+	data: T;
 };
 
 export type None = {
-  kind: "none";
+	kind: "none";
 };
 
 export type Option<T> = Some<T> | None;
 
 export function some<T>(value: T): Some<T> {
-  return { kind: "some", data: value };
+	return { kind: "some", data: value };
 }
 
 export function none(): None {
-  return { kind: "none" };
+	return { kind: "none" };
 }
 
 /**
@@ -26,7 +26,7 @@ export function none(): None {
  * @returns `true` if the option is a `Some` variant of Option
  */
 export function isSome<T>(option: Option<T>): option is Some<T> {
-  return option.kind === "some";
+	return option.kind === "some";
 }
 
 /**
@@ -35,7 +35,7 @@ export function isSome<T>(option: Option<T>): option is Some<T> {
  * @returns `true` if the option is a `None` variant of Option
  */
 export function isNone<T>(option: Option<T>): option is None {
-  return option.kind === "none";
+	return option.kind === "none";
 }
 
 /**
@@ -47,11 +47,11 @@ export function isNone<T>(option: Option<T>): option is None {
  * @returns the result of applying `f` or a `None` untouched
  */
 export function map<T, U>(option: Option<T>, mapper: (t: T) => U): Option<U> {
-  if (isSome(option)) {
-    return some(mapper(option.data));
-  }
+	if (isSome(option)) {
+		return some(mapper(option.data));
+	}
 
-  return none();
+	return none();
 }
 
 /**
@@ -61,11 +61,11 @@ export function map<T, U>(option: Option<T>, mapper: (t: T) => U): Option<U> {
  * otherwise it throws a custom object.
  */
 export function unsafeUnwrap<T>(option: Option<T>): T {
-  if (isSome(option)) {
-    return option.data;
-  }
+	if (isSome(option)) {
+		return option.data;
+	}
 
-  throw new TypeError("Unwrapping None.");
+	throw new TypeError("Unwrapping None.");
 }
 
 /**
@@ -75,11 +75,11 @@ export function unsafeUnwrap<T>(option: Option<T>): T {
  * @param fallback - The fallback to return when the result is a `None`
  */
 export function unwrapOr<T, U>(option: Option<T>, fallback: U): T | U {
-  if (isSome(option)) {
-    return option.data;
-  }
+	if (isSome(option)) {
+		return option.data;
+	}
 
-  return fallback;
+	return fallback;
 }
 
 /**
@@ -91,14 +91,14 @@ export function unwrapOr<T, U>(option: Option<T>, fallback: U): T | U {
  * @param f - The function to apply to the current value
  */
 export function andThen<T, U>(
-  option: Option<T>,
-  mapper: (value: T) => Option<U>,
+	option: Option<T>,
+	mapper: (value: T) => Option<U>,
 ): Option<U> {
-  if (isSome(option)) {
-    return mapper(option.data);
-  }
+	if (isSome(option)) {
+		return mapper(option.data);
+	}
 
-  return none();
+	return none();
 }
 
 /**
@@ -108,11 +108,11 @@ export function andThen<T, U>(
  * @param error - The error to apply when the `Option` is a `None`
  */
 export function toResult<T, E>(option: Option<T>, error: E): Result<T, E> {
-  if (isSome(option)) {
-    return ok(option.data);
-  }
+	if (isSome(option)) {
+		return ok(option.data);
+	}
 
-  return err(error);
+	return err(error);
 }
 
 /**
@@ -121,10 +121,10 @@ export function toResult<T, E>(option: Option<T>, error: E): Result<T, E> {
  * stringified value
  * `None` will render as `None`
  */
-export function toString<T>(option: Option<T>): string {
-  if (isSome(option)) {
-    return `Some(${JSON.stringify(option.data)})`;
-  }
+export function optionToString<T>(option: Option<T>): string {
+	if (isSome(option)) {
+		return `Some(${JSON.stringify(option.data)})`;
+	}
 
-  return "None";
+	return "None";
 }

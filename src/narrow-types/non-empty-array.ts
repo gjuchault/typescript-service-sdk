@@ -5,19 +5,19 @@ import type { Option } from "../option.js";
 import { none, some, unsafeUnwrap } from "../option.js";
 
 export function createNonEmptyArraySchema<T extends ZodTypeAny>(schema: T) {
-  return z.array(schema).nonempty();
+	return z.array(schema).nonempty();
 }
 
 export type NonEmptyArray<T> = [T, ...T[]];
 
 export function isNonEmptyArray<T>(
-  input: T[] | readonly T[],
+	input: T[] | readonly T[],
 ): input is NonEmptyArray<T> {
-  return input.length > 0;
+	return input.length > 0;
 }
 
 export function fromElements<T>(...input: NonEmptyArray<T>): NonEmptyArray<T> {
-  return unsafeUnwrap(makeNonEmptyArray([...input]));
+	return unsafeUnwrap(makeNonEmptyArray([...input]));
 }
 
 /**
@@ -25,16 +25,16 @@ export function fromElements<T>(...input: NonEmptyArray<T>): NonEmptyArray<T> {
  * This method returns a new array without modifying any existing arrays.
  * @param items - Additional arrays and/or items to add to the end of the array.
  */
-export function concat<TL>(
-  ...items: [NonEmptyArray<TL>, ...TL[][]]
-): NonEmptyArray<TL> {
-  const result: TL[] = [];
+export function concat<Item>(
+	...items: [NonEmptyArray<Item>, ...Item[][]]
+): NonEmptyArray<Item> {
+	const result: Item[] = [];
 
-  for (const item of items) {
-    result.push(...item);
-  }
+	for (const item of items) {
+		result.push(...item);
+	}
 
-  return unsafeUnwrap(makeNonEmptyArray(result));
+	return unsafeUnwrap(makeNonEmptyArray(result));
 }
 
 /**
@@ -43,12 +43,12 @@ export function concat<TL>(
  * @param predicate - A function that accepts up to three arguments. The filter method calls the predicate function one time for each element in the array.
  */
 export function filter<T>(
-  input: NonEmptyArray<T>,
-  predicate: (value: T, index: number, array: T[]) => boolean,
+	input: NonEmptyArray<T>,
+	predicate: (value: T, index: number, array: T[]) => boolean,
 ): Option<NonEmptyArray<T>> {
-  return makeNonEmptyArray(
-    input.filter((value, index, array) => predicate(value, index, array)),
-  );
+	return makeNonEmptyArray(
+		input.filter((value, index, array) => predicate(value, index, array)),
+	);
 }
 
 /**
@@ -59,10 +59,10 @@ export function filter<T>(
  * @param depth - The maximum recursion depth
  */
 export function flat<T>(
-  input: NonEmptyArray<T>,
-  depth?: number,
+	input: NonEmptyArray<T>,
+	depth?: number,
 ): NonEmptyArray<T> {
-  return unsafeUnwrap(makeNonEmptyArray(input.flat(depth) as T[]));
+	return unsafeUnwrap(makeNonEmptyArray(input.flat(depth) as T[]));
 }
 
 /**
@@ -75,14 +75,14 @@ export function flat<T>(
  * callback function one time for each element in the array.
  */
 export function flatMap<T, U>(
-  input: NonEmptyArray<T>,
-  predicate: (value: T, index: number, array: T[]) => U | readonly U[],
+	input: NonEmptyArray<T>,
+	predicate: (value: T, index: number, array: T[]) => U | readonly U[],
 ): NonEmptyArray<U> {
-  return unsafeUnwrap(
-    makeNonEmptyArray(
-      input.flatMap((value, index, array) => predicate(value, index, array)),
-    ),
-  );
+	return unsafeUnwrap(
+		makeNonEmptyArray(
+			input.flatMap((value, index, array) => predicate(value, index, array)),
+		),
+	);
 }
 
 /**
@@ -91,14 +91,14 @@ export function flatMap<T, U>(
  * @param callbackfn - A function that accepts up to three arguments. The map method calls the callbackfn function one time for each element in the array.
  */
 export function map<T, U>(
-  input: NonEmptyArray<T>,
-  predicate: (value: T, index: number, array: T[]) => U,
+	input: NonEmptyArray<T>,
+	predicate: (value: T, index: number, array: T[]) => U,
 ): NonEmptyArray<U> {
-  return unsafeUnwrap(
-    makeNonEmptyArray(
-      input.map((value, index, number) => predicate(value, index, number)),
-    ),
-  );
+	return unsafeUnwrap(
+		makeNonEmptyArray(
+			input.map((value, index, number) => predicate(value, index, number)),
+		),
+	);
 }
 
 /**
@@ -107,7 +107,7 @@ export function map<T, U>(
  * @param input - The input array
  */
 export function reverse<T>(input: NonEmptyArray<T>): NonEmptyArray<T> {
-  return input.reverse() as NonEmptyArray<T>;
+	return input.reverse() as NonEmptyArray<T>;
 }
 
 /**
@@ -121,13 +121,13 @@ export function reverse<T>(input: NonEmptyArray<T>): NonEmptyArray<T> {
  * If end is undefined, then the slice extends to the end of the array.
  */
 export function slice<T>(
-  input: NonEmptyArray<T>,
-  start?: number,
-  end?: number,
+	input: NonEmptyArray<T>,
+	start?: number,
+	end?: number,
 ): Option<NonEmptyArray<T>> {
-  return makeNonEmptyArray(input.slice(start, end));
+	return makeNonEmptyArray(input.slice(start, end));
 }
 
 export function makeNonEmptyArray<T>(input: T[]): Option<NonEmptyArray<T>> {
-  return isNonEmptyArray(input) ? some(input) : none();
+	return isNonEmptyArray(input) ? some(input) : none();
 }
