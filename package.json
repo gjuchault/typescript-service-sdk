@@ -45,7 +45,7 @@
     "semantic-release": "semantic-release"
   },
   "devDependencies": {
-    "@microsoft/api-extractor": "^7.41.0",
+    "@microsoft/api-extractor": "^7.42.2",
     "@nitrogql/esbuild-register": "^1.6.0-beta.1",
     "@ryansonshine/commitizen": "^4.2.8",
     "@ryansonshine/cz-conventional-changelog": "^3.3.4",
